@@ -49,10 +49,23 @@ def get_node_matrix(V, ROW, COL, n, size):
 
 # IDEA:   We want to get the children of a specific node in
 #         the suffix tree.
-# INPUT:  (int)         col_idx - index in node matrix
+# INPUT:  (Node)        root
+#         (str)         prefix - branching node substring
 # OUTPUT: (list[int])   col - reconstructed column
-def get_children(col_idx):
-    pass
+def get_children(root, prefix):
+    # WARNING:  this is pseudocode
+    # TODO:     change based on tree data structure
+    prev_root = root
+    while prefix:
+        for out_edge in root.out_edges:
+            prev_root = root
+            if prefix.startswith(out_edge.text):
+                root = out_edge.end                     # out_edge = (start, end)
+                prefix = prefix[len(out_edge.text):]
+                break
+        if prev_root is root:
+            raise "Invalid prefix in get_children()"
+    return root.out_edges
 
 ################################################################################
 
