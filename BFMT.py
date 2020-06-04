@@ -1,4 +1,4 @@
-from suffix_trees import STree
+from suffix_tree import Tree
 import glob
 import pandas as pd
 
@@ -39,9 +39,10 @@ def merge_per_folder(folder_path, output_filename):
     # write to file
     return output_content
 
-docs = pd.read_csv(INPUT, header=None, engine='python', nrows=N_DOCS)[5]
-docs = docs.apply(lambda x: x.lower())
-docs = docs.apply(lambda x: ''.join([i if ord(i) < 128 else ' ' for i in x]))
-docs = list(docs)
-tree = STree.STree(docs)
-# print(docs)
+def get_BFMT(file=INPUT, n_docs=N_DOCS):
+    docs = pd.read_csv(file, header=None, engine='python', nrows=n_docs)[5]
+    docs = docs.apply(lambda x: x.lower())
+    docs = docs.apply(lambda x: ''.join([i if ord(i) < 128 else ' ' for i in x]))
+    docs = list(docs)
+    tree = Tree(dict(enumerate(docs)))
+    return tree
