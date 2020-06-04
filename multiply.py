@@ -25,9 +25,26 @@ def is_leaf(node):
 # 		for child in node.children:
 # 			fill_phi(child, phi, )	
 
+#sigma notation labeled (5) in the paper
+def get_sum5(node, squigglyV, N, node_uids):
+	queue = [node]
+	sumvec = np.zeros(N)
 
-def get_phi(root, N, listoflevels):
-	#root is the root of tree, N is the dimension (num docs), v is the number of nodes
+	while not queue.empty():
+		curr = queue.pop(0)
+		for value, child in curr.childen.items():
+			if is_leaf(child) and child not in squigglyV:
+				sumvec += get_ith_basis_vec(node_uids[child], N)
+			else:
+				queue.append(child)
+
+#havent run yet!!!
+def get_phi(squigglyV, N, listoflevels, node_uids):
+	#squigglyV is a set of nodes, N is the dimension (num docs), listoflevels is varun's BF traversal, node_uids is 
+	#the map fron node to its unqiue identifier
+	V_caret = squigglyV
+	V_caret.add(listoflevels[0][0])
+
 	numNodes = listoflevels[-1][-1][1] + 1 #counter starts at 0
 	phi = np.zeros((N,numNodes - 1)) #ignore the root
 
@@ -35,12 +52,13 @@ def get_phi(root, N, listoflevels):
 	for i in range(len(listoflists), 1, -1): #skip the root, that's why we end at 1 instead of 0
 		level = listoflevels[i]
 		for node, count in level:
+			if node not in squigglyV: continue #accounted for by other nodes
 			counter -= 1 #adjust indexing 
 			if is_leaf(node):
-				vec = get_ith_basis_vec(node.index, N) #assuming node has attribute index, may need to use an extern data structure
+				vec = get_ith_basis_vec(node_uids[node], N)
 				phi[:][counter] = vec
 			else:
-				pass
+				phi[:][counter] = get_sum_5(node, squigglyV, N, node_uids)
 				#double check dafuq
 	return phi
 
