@@ -45,4 +45,4 @@ def get_BFMT(file=INPUT, n_docs=N_DOCS):
     docs = docs.apply(lambda x: ''.join([i if ord(i) < 128 else ' ' for i in x]))
     docs = list(docs)
     tree = Tree(dict(enumerate(docs)))
-    return tree
+    return tree, docs
