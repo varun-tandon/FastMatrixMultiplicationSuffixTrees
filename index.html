@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </head>
+    <body>
+        <h1>Suffix Tree Based Matrix Multiplication </h1>
+        <h3>by German Enik, Eric Lou, Kevin Tan, and Varun Tandon</h3>
+        <h4>Explainer of the paper Fast Algorithms for Learning with Long N-grams via Suffix Tree Based Matrix Multiplication (Paskov et al.)</h4>
+        <h2>Motivation</h2>
+        <p>Matrix multiplication is one of the most frequently performed operations 
+            in machine learning and data manipulation tasks. In many cases, the 
+            speed of these algorithms are largely bound by the speed at which 
+            they can perform these matrix vector multiplications. However, in the 
+            general case, matrix multiplications often take quadratic time. Thus, 
+            given the importance of matrix multiplication, speeding up this operation 
+            is critical for speeding up many big data tasks.
+        </p>
+        <p>
+            The  paper,  "Fast  Algorithms  for  Learning  with  Long  N-grams  via  Suffix  
+            Tree  Based  Matrix  Multiplication" by Paskov et al.  provides a linear time 
+            algorithm for multiplying a specific type of matrix, known as the N-gram matrix.
+        </p>
+        <p>
+            In  this  paper,  an N-gram  is  defined  to  be  an  arbitrary  string  of  length N; 
+            this  is  an  important  distinction  because  there  exists  another  common  definition 
+            of N-gram  ,  which  is  a  string  of N English  words. However, we note that the set 
+            of all N-grams as defined in the paper is a superset of the set of all N-grams as traditionally defined, 
+            thus the traditional definition of an N-gram matrix is covered by the paper's definition
+        </p>
+        <p>
+            As this paper describes, N-gram matrices have a very rich structure 
+            to them which, when understood deeply, can improve both the efficacy 
+            and efficiency of machine learning models in natural language processing. 
+            The two core insights this paper makes about this intrinsic structure are the 
+            following:
+        </p>
+        <ol>
+            <li>If N-grams are chosen naively or exhaustively, then there is a
+                large probability that many columns in the N-gram matrix are going
+                to be completely identical, which makes some of the statistical 
+                "features" redundant. More on this in Section 2.2.</li>
+            <br>
+            <li>
+                Even after pruning out redundant columns in the N-gram matrix, 
+                many of the columns are still going to be linear combinations of 
+                other columns. More on this in Section 2.3.
+            </li>
+        </ol>
+    </body>
+</html>

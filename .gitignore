@@ -138,4 +138,4 @@ dmypy.json
 cython_debug/
 vscode/
 venv/
-text_data/training.1600000.processed.noemoticon.csv
+python/text_data/training.1600000.processed.noemoticon.csv
