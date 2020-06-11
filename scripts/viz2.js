@@ -37,8 +37,8 @@ $(document).ready(function () {
   root.x0 = height / 2;
   root.y0 = 0;
 
-  $('#ngram-matrix-visualization-uncompressed').css('height', '300px');
-  $('#ngram-matrix-visualization-uncompressed').css('overflow', 'scroll');
+//   $('#ngram-matrix-visualization-uncompressed').css('height', '300px');
+//   $('#ngram-matrix-visualization-uncompressed').css('overflow', 'scroll');
   $( "#show" ).click(function() {
     var str_list = $( "#words" ).val().split(",");
     for (let i = 0; i < str_list.length; i++) {
@@ -111,25 +111,25 @@ $(document).ready(function () {
     }).forEach(function(key) {
       orderedNgramFreqs[key] = ngramFreqs[key];
     });
-    let ngramText = "";
-    ngramText += "$$\\begin{matrix}"
-    for (let doc_num = 0; doc_num < str_list.length; doc_num++) {
-      ngramText += "& D_" + (doc_num + 1) + ""
-    }
-    ngramText += "\\\\"
-    for (let i = 0; i < Object.keys(orderedNgramFreqs).length; i++) {
-      ngramText += "\\texttt{" + Object.keys(orderedNgramFreqs)[i] + "}"
-      for (let doc_num = 0; doc_num < str_list.length; doc_num++) {
-	ngramText += "&" +
-	  (orderedNgramFreqs[Object.keys(orderedNgramFreqs)[i]][doc_num] !== undefined ?
-	    orderedNgramFreqs[Object.keys(orderedNgramFreqs)[i]][doc_num] : 0)
-      }
-      ngramText += "\\\\"
-    }
-    ngramText += "\\end{matrix}$$"
-    console.log(ngramText)
-    document.getElementById('ngram-matrix-visualization-uncompressed').innerHTML = ngramText;
-    MathJax.typeset()
+    // let ngramText = "";
+    // ngramText += "$$\\begin{matrix}"
+    // for (let doc_num = 0; doc_num < str_list.length; doc_num++) {
+    //   ngramText += "& D_" + (doc_num + 1) + ""
+    // }
+    // ngramText += "\\\\"
+    // for (let i = 0; i < Object.keys(orderedNgramFreqs).length; i++) {
+    //   ngramText += "\\texttt{" + Object.keys(orderedNgramFreqs)[i] + "}"
+    //   for (let doc_num = 0; doc_num < str_list.length; doc_num++) {
+	// ngramText += "&" +
+	//   (orderedNgramFreqs[Object.keys(orderedNgramFreqs)[i]][doc_num] !== undefined ?
+	//     orderedNgramFreqs[Object.keys(orderedNgramFreqs)[i]][doc_num] : 0)
+    //   }
+    //   ngramText += "\\\\"
+    // }
+    // ngramText += "\\end{matrix}$$"
+    // console.log(ngramText)
+    // document.getElementById('ngram-matrix-visualization-uncompressed').innerHTML = ngramText;
+    // MathJax.typeset()
   });
 
   function clearSearches() {

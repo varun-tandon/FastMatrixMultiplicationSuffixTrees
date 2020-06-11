@@ -38,7 +38,8 @@ $(document).ready(function () {
   root.x0 = height / 2;
   root.y0 = 0;
 
-  $('#ngram-matrix-visualization-uncompressed').css('height', '300px');
+  $('#ngram-matrix-visualization-uncompressed').css('height', 'max-content');
+  $('#ngram-matrix-visualization-uncompressed').css('padding', '20px');
   $('#ngram-matrix-visualization-uncompressed').css('overflow', 'scroll');
   $( "#show" ).click(function() {
     var str_list = $( "#words" ).val().split(",");
@@ -78,17 +79,17 @@ $(document).ready(function () {
     for (let i = 0; i < str_list.length; i++) {
       let document = str_list[i];
       for (let n = 1; n <= $("#ngramLength").val(); n++) {
-	for (let start_ind = 0; start_ind <= document.length - n; start_ind++) {
-	  let ngram = document.substring(start_ind, start_ind + n);
-	  if (ngramFreqs[ngram] === undefined) {
-	    ngramFreqs[ngram] = {}
-	    ngramFreqs[ngram][i] = 1;
-	  } else if (ngramFreqs[ngram][i] === undefined) {
-	    ngramFreqs[ngram][i] = 1;
-	  } else {
-	    ngramFreqs[ngram][i] += 1;
-	  }
-	}
+        for (let start_ind = 0; start_ind <= document.length - n; start_ind++) {
+        let ngram = document.substring(start_ind, start_ind + n);
+        if (ngramFreqs[ngram] === undefined) {
+            ngramFreqs[ngram] = {}
+            ngramFreqs[ngram][i] = 1;
+        } else if (ngramFreqs[ngram][i] === undefined) {
+            ngramFreqs[ngram][i] = 1;
+        } else {
+            ngramFreqs[ngram][i] += 1;
+        }
+        }
       }
     }
     const orderedNgramFreqs = {};
@@ -114,15 +115,15 @@ $(document).ready(function () {
     });
     let ngramText = "";
     ngramText += "$$\\begin{matrix}"
-    for (let doc_num = 0; doc_num < str_list.length; doc_num++) {
-      ngramText += "& D_" + (doc_num + 1) + ""
+    for (let i = 0; i < Object.keys(orderedNgramFreqs).length; i++) {
+        ngramText += "& \\texttt{" + Object.keys(orderedNgramFreqs)[i] + "}"
     }
     ngramText += "\\\\"
-    for (let i = 0; i < Object.keys(orderedNgramFreqs).length; i++) {
-      ngramText += "\\texttt{" + Object.keys(orderedNgramFreqs)[i] + "}"
-      for (let doc_num = 0; doc_num < str_list.length; doc_num++) {
-	ngramText += "&" +
-	  (orderedNgramFreqs[Object.keys(orderedNgramFreqs)[i]][doc_num] !== undefined ?
+    for (let doc_num = 0; doc_num < str_list.length; doc_num++) {
+      ngramText += "D_" + (doc_num + 1) + " "
+      for (let i = 0; i < Object.keys(orderedNgramFreqs).length; i++) {
+	    ngramText += "&" +
+	    (orderedNgramFreqs[Object.keys(orderedNgramFreqs)[i]][doc_num] !== undefined ?
 	    orderedNgramFreqs[Object.keys(orderedNgramFreqs)[i]][doc_num] : 0)
       }
       ngramText += "\\\\"
