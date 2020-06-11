@@ -261,7 +261,7 @@
                     the row of a matrix. That is, $$\mathcal{M}[i] = M_i$$.
                 </li>
                 <li>
-                    <b>Layer 2:</b> The second key into $\mathcal{M}$ represents 
+                    <b>Layer 2:</b> The second key into $$\mathcal{M}$$ represents 
                     the column of a matrix. That is, $$\mathcal{M}[i][j] = M_{ij}$$.
                 </li>
             </ul>
@@ -345,7 +345,7 @@ Hi my name is Kevin
         </a>
         <p class="stbmm-article-content">
             Informally, an N-gram is a string of $$N$$ letters
-            <dt-fn>An N-gram could also mean a sequence of $N$ words, phonemes, 
+            <dt-fn>An N-gram could also mean a sequence of $$N$$ words, phonemes, 
                 or syllables. While our analysis rests on the assumption that 
                 an N-gram is a sequence of letters, it is by no means limited 
                 to it. In particular, the contents of this article can be easily 
@@ -497,8 +497,8 @@ Hi my name is Kevin
             In machine learning tasks, removing redundant features can yield 
             improvements in memory usage, training time, and model performance. 
             For \ngram matrices, this amounts to removing \ngrams that always 
-            has the same frequency as some other $N$-gram. Let's see how we can 
-            use $T$ to identify such \ngrams in $X$. 
+            has the same frequency as some other N-gram. Let's see how we can 
+            use $$T$$ to identify such \ngrams in $$X$$. 
         </p>
         <a id="equivalence_classes">
         <h3 class="stbmm-article-h3">5.1. Equivalence Classes of N-grams and the Node Matrix $$\mathcal{X}$$</h3>
@@ -614,7 +614,7 @@ Hi my name is Kevin
             <h3 class="stbmm-article-h3">7.4. Linear Dependencies of Columns </h3>
             </a>
 
-                <p class="stbmm-article-content">An interesting and important observation is that the columns of the N-gram matrix are still interrelated when we generalized to multiple documents. The reason why this is the case is because these interrelationships hold for each individual row in the $N$-gram matrix and, because the rows do not interact, these same relationships still hold when we consider all of the rows simultaneously.</p>
+                <p class="stbmm-article-content">An interesting and important observation is that the columns of the N-gram matrix are still interrelated when we generalized to multiple documents. The reason why this is the case is because these interrelationships hold for each individual row in the N-gram matrix and, because the rows do not interact, these same relationships still hold when we consider all of the rows simultaneously.</p>
         <!-- Section 8 -->
         <h2 class="stbmm-article-h2">8. Multiplying N-gram Matrices in Linear Space and Time</h2>
             <p class="stbmm-article-content">Alas! Our journey has come to an end; everything is in place to discuss how we can multiply N-gram matrices in linear space and time. To be pedantic, this technique doesn't apply to arbitrary N-gram matrices but specifically to node matrices (N-gram matrices without redundant columns). This isn't really a limitation, however, because, as mentioned in section <a href="#equivalence_classes">5.1</a>, this is almost always what we want.</p>
