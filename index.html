@@ -133,10 +133,68 @@
         <!-- Section 6 -->
         <!-- Section 7 -->
         <!-- Section 8 -->
+        <h2 class="stbmm-article-h2">8. Multiplying N-gram Matrices in Linear Space and Time</h2>
+            <p class="stbmm-article-content">Alas! Our journey has come to an end; everything is in place to discuss how we can multiply $$N$$-gram matrices in linear space and time. To be pedantic, this technique doesn't apply to arbitrary $$N$$-gram matrices but specifically to node matrices ($$N$$-gram matrices without redundant columns). This isn't really a limitation, however, because, as mentioned in section 5.1, this is almost always what we want.</p>
+
+            <h3 class="stbmm-article-h3">8.1 Computing $$\mathcal{X}w$$ in Linear Space and Time</h3>
+                <p class="stbmm-article-content"> We saw in section \ref{linear-dependencies} that if $$p$$ was a node in $$T$$ and $$c_1, \dots, c_n$$ were its children, then $$\mathcal{X} = \sum_i \mathcal{X}_{c_i}$$. This is an interesting observation, but what does it have to do with efficient matrix-vector multiplication? Well, let's assume for the moment that $$p$$ and $$c_1, \dots, c_n$$ were the only nodes in our generalized suffix tree. This means that our node matrix might\footnote{Any permutation of the columns would be an equally valid node matrix.} look something like</p>
+                
+                <div class="stbmm-article-equation">$$\mathcal{X} = \begin{pmatrix} \mathcal{X}_{c_1} & \dots & \mathcal{X}_{c_n} & \mathcal{X}_p \end{pmatrix}.$$</div>
+
+                <h5 class="stbmm-article-h5">8.1.1. Reformulating the Operation</h5>
+                 
+                    <p class="stbmm-article-content">Let's see what insights we might derive by actually multiplying the corresponding matrix with a vector $$w$$, recalling that matrix-vector multiplication can be thought of as a linear combination of the matrix columns.</p>
+                    
+                    <div class="stbmm-article-equation">
+                    $$\begin{align*}
+                        \mathcal{X} w &= w_{c_1}\mathcal{X}_{c_1} + \dots + w_{c_n}\mathcal{X}_{c_n} + w_p\mathcal{X}_p\\
+                        &= w_{c_1}\mathcal{X}_{c_1} + \dots + w_{c_n}\mathcal{X}_{c_n} + w_p\sum_i \mathcal{X}_{c_i}\\
+                        &= (w_{c_1} + w_p)\mathcal{X}_{c_1} + \dots + (w_{c_n} + w_p)\mathcal{X}_{c_n}
+                    \end{align*}$$
+                    </div>
+
+                    <p class="stbmm-article-content">Notice that the only columns that remain are the columns that correspond to the children of $$p$$. In fact, we can reformulate $$\mathcal{X} w$$ as $$\Phi \beta$$ where $$\Phi$$ and $$\beta$$ are defined in the following manner.</p>
+
+                    <div class="stbmm-article-equation">
+                    \begin{align*}
+                        \Phi &= \begin{pmatrix} \mathcal{X}_{c_1} & \dots & \mathcal{X}_{c_n} & 0 \end{pmatrix}\\
+                        \beta &= \begin{pmatrix} w_{c_1} + w_p & \dots & w_{c_n} + w_p & 0 \end{pmatrix}^T
+                    \end{align*}
+                    </div>
+
+                    <p class="stbmm-article-content">This insight—the ability to reformulate our original operation in terms of a different matrix and vector—is a general one and is not limited to the specific example considered above. The interpretation of this result is that we don't <i>actually</i> need to multiply any of the columns corresponding to an internal node $p$ of $$T$$; we can \textit{simulate} this by passing the number we would've needed to multiply $$\mathcal{X}_p$$ by—$$w_p$$—down to $$p$$'s children.</p>
+
+                <h5 class="stbmm-article-h5">8.1.2. Analyzing the Space and Time Complexity</h5>
+
+                    <p class="stbmm-article-content"> In general, the only nonzero columns in matrix $$\Phi$$ are going to be the ones that correspond to the leaves in $$T$$. Because there are a linear number of leaves in a suffix tree, there are a linear number of nonzero columns in $$\Phi$$. Since leaves correspond to suffixes and each suffix can only belong to one document (due to the unique sentinels we appended to each document during the construction of $$T$$), each of these columns has exactly one nonzero entry. This means that $$\Phi$$ satisfies the sparsity condition described in section \ref{mv_mult_in_linear_time}, which allows $$\Phi$$ to being stored in linear space and multiplied in linear time. Constructing $$\beta$$ can also be done in linear time by performing a simple top down traversal of the suffix tree, which has a linear number of nodes. </p>
+
+            <h3 class="stbmm-article-h3">8.2. Computing $$\mathcal{X}^Ty$$ in Linear Space and Time</h3>
+
+                <p class="stbmm-article-content">Depending on the context, it may be necessary to multiply the transpose of the node matrix instead. This can also be done in linear time. To see why this is the case, let's reuse the setup from section \ref{computing_Xw}.</p>
+
+                <div class="stbmm-article-equation"> \[\mathcal{X}^T = \begin{pmatrix} \mathcal{X}_{c_1} & \dots & \mathcal{X}_{c_n} & \mathcal{X}_p \end{pmatrix}^T\] </div>
+
+                <h5 class="stbmm-article-h5">8.2.1. Reformulating the Operation</h5>
+
+                    <p class="stbmm-article-content"> Let's see what insights we might derive by actually multiplying $$\mathcal{X}^T$$ with a vector $$y$$, recalling that matrix-vector multiplication can be thought of as taking the dot product of the matrix rows with the vector $$y$$. </p>
+
+                    <div class="stbmm-article-equation">\begin{align*}
+                        \mathcal{X}^T y &= \begin{pmatrix} \mathcal{X}_{c_1}^Ty & \dots & \mathcal{X}_{c_n}^Ty & \mathcal{X}_p^T y \end{pmatrix}^T\\
+                        &= \begin{pmatrix} \mathcal{X}_{c_1}^Ty & \dots & \mathcal{X}_{c_n}^Ty & (\sum_i \mathcal{X}_{c_i})^T y \end{pmatrix}^T\\
+                        &= \begin{pmatrix} \mathcal{X}_{c_1}^Ty & \dots & \mathcal{X}_{c_n}^Ty & \sum_i \mathcal{X}_{c_i}^Ty  \end{pmatrix}^T
+                    \end{align*} </div>
+
+                    <p class="stbmm-article-content"> This insight suggests that we can simply compute the dot products for the children and simply add them together to get the value in the output vector corresponding to the parent. In contrast to the previous section where the tree traversal was top-down and performed before the multiplication takes place, we now have to traverse the tree bottom-up and do this as the multiplication is taking place. </p>
+
+                <h5 class="stbmm-article-h5"> Analyzing the Space and Time Complexity </h5>
+
+                    <p class="stbmm-article-content"> We've already address why $$\Phi$$ takes a linear amount of space to store. All that remains is analyzing why this operation takes linear time to compute. It takes a constant amount of time to multiply such vectors. Since we need to perform a linear number of such multiplications because there is a linear number of leaves, this takes linear time. Filling out the other entries of the result vector with a bottom up traversal of the suffix tree also takes linear time because it involves just adding a constant number of things.</p>
+
+
+
         <!-- Section 9 -->
-        <h2 class="stbmm-article-h2">Conclusion</h2>
-        <p class="stbmm-article-content">
-        The $$N$$-gram matrix, a critical component of many popular machine learning models in the field of natural language processing, can be represented in linear space and multiplied in linear time. This is done by first recognizing and removing redundant $$N$$-grams which leaves us with a node matrix $$\ndm$$, and then resolving the linear dependencies between the remaining columns which leaves us with a leaf label matrix $$\Phi$$ which has a linear number of nonzero entries; these kinds of matrices can be represented in linear space and multiplied in linear time. Multiplying $$\ndm$$ with a vector $$w$$ requires transforming $$w$$ into $$\beta$$ via a top down traversal of the corresponding generalized suffix tree, propagating weights downward. Multiplying $$\ndm^T$$ with a vector $$y$$ requires a bottom up traversal of the corresponding generalized suffix tree, propagating intermediate results upward. None of these incredible improvements would have been possible without having recognized and explored the intimate relationship between \ngram matrices and generalized suffix trees.</p>
+        <h2 class="stbmm-article-h2">9. Conclusion</h2>
+            <p class="stbmm-article-content">The $$N$$-gram matrix, a critical component of many popular machine learning models in the field of natural language processing, can be represented in linear space and multiplied in linear time. This is done by first recognizing and removing redundant N-grams which leaves us with a node matrix $$\mathcal{X}$$, and then resolving the linear dependencies between the remaining columns which leaves us with a leaf label matrix $$\Phi$$ which has a linear number of nonzero entries; these kinds of matrices can be represented in linear space and multiplied in linear time. Multiplying $$\mathcal{X}$$ with a vector $$w$$ requires transforming $$w$$ into $$\beta$$ via a top down traversal of the corresponding generalized suffix tree, propagating weights downward. Multiplying $$\mathcal{X}^T$$ with a vector $$y$$ requires a bottom up traversal of the corresponding generalized suffix tree, propagating intermediate results upward. None of these incredible improvements would have been possible without having recognized and explored the intimate relationship between N-gram matrices and generalized suffix trees.</p>
         <!-- Visualization of Suffix Tree -->
         <h2 class="stbmm-article-h2">Add your documents.</h2>
         <textarea id="words" class="stbmm-article-textarea">
