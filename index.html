@@ -641,7 +641,7 @@
     <p class="stbmm-article-content">Alas! Our journey has come to an end; everything is in place to discuss how we can multiply N-gram matrices in linear space and time. To be pedantic, this technique doesn't apply to arbitrary N-gram matrices but specifically to node matrices (N-gram matrices without redundant columns). This isn't really a limitation, however, because, as mentioned in section <a href="#equivalence_classes">5.1</a>, this is almost always what we want.</p>
 
     <a id="computing_Xw">
-      <h3 class="stbmm-article-h3">8.1 Computing $$\mathcal{X}w$$ in Linear Space and Time</h3>
+      <h3 class="stbmm-article-h3">8.1. Computing $$\mathcal{X}w$$ in Linear Space and Time</h3>
     </a>
     <p class="stbmm-article-content"> We saw in section <a href="#linear-dependencies">7.4</a> that if $$p$$ was a node in $$T$$ and $$c_1, \dots, c_n$$ were its children, then $$\mathcal{X} = \sum_i \mathcal{X}_{c_i}$$. This is an interesting observation, but what does it have to do with efficient matrix-vector multiplication? Well, let's assume for the moment that $$p$$ and $$c_1, \dots, c_n$$ were the only nodes in our generalized suffix tree. This means that our node matrix might
     <dt-fn>Any permutation of the columns would be an equally valid node matrix.</dt-fn>
