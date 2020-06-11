@@ -708,7 +708,9 @@
     to store. What are the empirical results?</p>
     <p class="stbmm-article-content">In order to test the performance of this
     method of multiplying N-gram matrices, we used as our corpus a collection
-    of tweets. After constructing a suffix tree for this corpus, and using it
+    of randomly sampled tweets
+    <dt-fn>Dataset can be found here: https://www.kaggle.com/kazanova/sentiment140</dt-fn>
+    . After constructing a suffix tree for this corpus, and using it
     to construct a node matrix, we then implemented section
     <a href="#computing_Xw">8.1</a> in Python. As we increased the size of the
     corpus, we timed how long the multiplication took, averaging the results
