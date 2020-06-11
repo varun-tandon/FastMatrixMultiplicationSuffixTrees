@@ -336,6 +336,7 @@ $('.node').mouseenter((e) => {
             reconstructedText += '</span>'
             startIndex = selectedIndex + suffix.length;
         }
+        reconstructedText += documents.substring(startIndex)
         console.log(reconstructedText)
         $('#documentHighlightedP').html(reconstructedText);
     }
