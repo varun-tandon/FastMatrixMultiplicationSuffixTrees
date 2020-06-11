@@ -111,7 +111,7 @@ $(document).ready(function () {
 	return 0;
       }
     }).forEach(function(key) {
-      orderedNgramFreqs[key.replace(' ', '$\\Box$')] = ngramFreqs[key];
+      orderedNgramFreqs[key.split(' ').join('$\\Box$')] = ngramFreqs[key];
     });
     let ngramText = "";
     ngramText += "$$\\begin{matrix}"
