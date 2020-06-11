@@ -320,16 +320,12 @@
       C &= \{D_1, D_2, D_3\}
       \end{align*}$$
       </p>
-      <h3 class="stbmm-article-h3">Define your own documents.</h3>
-      <p class="stbmm-article-content">Throughout this article, we have visualizations
-      of some of the concepts we describe. You can define the documents used for these visualizations here
-      (in comma-separated format),
-      or you can use the documents we provide! To keep visualizations smaller,
-      we also allow you to select the maximum N-gram size.
-      <dt-fn>Note: While many of these algorithms operate in linear time,
-	our visualizations do not (since we have to display them). Thus,
-	these visualizations tend to work better with smaller document sizes.
-      </dt-fn>
+      <p class="stbmm-article-content">Peppered throughout the article are
+      visualizations of the concepts we describe. You can define the document
+      corpus used for these visualizations here (in a comma-separated format),
+      or you can use the default documents we've provided. In addition to the
+      documents, you're also given the ability to toggle $$N$$, which is the
+      maximum N-gram length.
       </p>
       <textarea id="words" class="stbmm-article-textarea">
 	Hi my name is Varun,
@@ -652,7 +648,12 @@
 	\end{align*}
       </div>
 
-      <p class="stbmm-article-content">This insight—the ability to reformulate our original operation in terms of a different matrix and vector—is a general one and is not limited to the specific example considered above. The interpretation of this result is that we don't <i>actually</i> need to multiply any of the columns corresponding to an internal node $$p$$ of $$T$$; we can \textit{simulate} this by passing the number we would've needed to multiply $$\mathcal{X}_p$$ by—$$w_p$$—down to $$p$$'s children.</p>
+      <p class="stbmm-article-content">This insight—the ability to reformulate
+      our original operation in terms of a different matrix and vector—is a
+      general one and is not limited to the specific example considered above.
+      The interpretation of this result is that we don't <i>actually</i> need to
+      multiply any of the columns corresponding to an internal node $$p$$ of
+      $$T$$; we can <i>simulate</i> this by passing the number we would've needed to multiply $$\mathcal{X}_p$$ by—$$w_p$$—down to $$p$$'s children.</p>
 
       <h5 class="stbmm-article-h5">8.1.2. Analyzing the Space and Time Complexity</h5>
 
@@ -683,27 +684,26 @@
 
 
       <!-- Section 9 -->
-      <h2 class="stbmm-article-h2">9. Does It Actually Work?</h2>
-
-      <p class="stbmm-article-content">
-      After excessively studying the paper, the moment of truth
-      approached: the theory may work out, but is the multiplication
-      runtime actually linear in practice? We used a dataset of tweets
-      for text data, constructed an N-gram matrix and a suffix tree,
-      and then replicated section <a href="#computing_Xw">8.1</a> in Python.
-      As we increased the size of the corpus, we timed how long the
-      program took to run, conducting 20 trials per corpus size with
-      randomized vectors per corpus. We then took the average of the runs. Here are our results:</p>
-
+      <h2 class="stbmm-article-h2">9. Experimental Results</h2>
+      <p class="stbmm-article-content">The theory checks out, but how well do
+      these techniques work in practice? Suffix trees are one of the most famous
+      and important string data structures, but are known to be memory intensive
+      to store. What are the empirical results?</p>
+      <p class="stbmm-article-content">In order to test the performance of this
+      method of multiplying N-gram matrices, we used as our corpus a collection
+      of tweets. After constructing a suffix tree for this corpus, and using it
+      to construct a node matrix, we then implemented section
+      <a href="#computing_Xw">8.1</a> in Python. As we increased the size of the
+      corpus, we timed how long the multiplication took, averaging the results
+      of 20 trials.</p>
       <div class="stbmm-article-image">
 	<img src="images/imgruntime.png"  id="stbmm-article-imgruntime" />
       </div>
-
-      <p class="stbmm-article-content">The graph above looks
-      linear with a few outliers, which confirms
-      that the multiplication is carried out in linear time.
-      Feel free to check out the Python scripts (and the code for this website)
-      <a href="https://github.com/varun-tandon/FastMatrixMultiplicationSuffixTrees">here</a>!</p>
+      <p class="stbmm-article-content">As you can see, the graph above is
+      roughly linear with a few outliers, which confirms that the multiplication
+      is indeed carried out in linear time. Feel free to examine the Python
+      scripts used for these experiments
+      <a href="https://github.com/varun-tandon/FastMatrixMultiplicationSuffixTrees">here</a>.</p>
 
       <!-- Section 10 -->
       <h2 class="stbmm-article-h2">10. Conclusion</h2>
