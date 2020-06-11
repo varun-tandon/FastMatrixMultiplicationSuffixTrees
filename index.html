@@ -216,7 +216,18 @@
 	@media only screen and (max-device-width: 480px) {
 	  .mobile_device_480px{display: block;}
 	  .desktop {display: none;}
-	}
+    }
+    
+    .viz_area_document_selection {
+        display: flex;
+        flex-direction: row;
+        margin-left: 25%;
+    }
+    .viz4_area_document_selection {
+        display: flex;
+        flex-direction: row;
+        margin-left: 25%;
+    }
   </style>
 </head>
 <body>
@@ -495,6 +506,7 @@
         <button id="submitSearchSingle">Search</button>
         <p id="searchResultsSingle"></p>
       </div>
+      <div class="viz_area_document_selection"></div>
       <svg id="viz_area3" height=800 width=1000></svg>
     <a id="num_times_S_in_D">
       <h3 class="stbmm-article-h3">4.2. How many times does $$S$$ appear in $$D$$ ?</h3>
@@ -518,6 +530,7 @@
     <p class="stbmm-article-content">Hover over a node to see the total
     number of leaves (equivalently, how many times that node appears in the document).
     </p>
+    <div class="viz4_area_document_selection"></div>
     <p class="stbmm-article-content" id="numLeavesTextSingle">
     No node selected.
     </p>

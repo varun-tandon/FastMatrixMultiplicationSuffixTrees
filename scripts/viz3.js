@@ -6,7 +6,7 @@ $(document).ready(function () {
   var ngram_is_collapsed = true;
   var stree = new SuffixTree();
   var treeData = stree.addString('$').convertToJson();
-
+  var selectedIndex = 0;
   var realWidth = window.innerWidth * 0.6;
   var realHeight = 800;
 
@@ -33,7 +33,6 @@ $(document).ready(function () {
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-
   root = treeData;
   root.x0 = height / 2;
   root.y0 = 0;
@@ -41,12 +40,27 @@ $(document).ready(function () {
   $('#ngram-matrix-visualization-uncompressed').css('height', 'max-content');
   $('#ngram-matrix-visualization-uncompressed').css('padding', '20px');
   $('#ngram-matrix-visualization-uncompressed').css('overflow', 'scroll');
+  function setSelected(i) {
+      selectedIndex = i;
+      $('#show').click();
+  }
   $( "#show" ).click(function() {
     var str_list = $( "#words" ).val().split(",");
     for (let i = 0; i < str_list.length; i++) {
       str_list[i] = str_list[i].trim();
     }
-    str_list = [str_list[0]]
+    var str_list_all = str_list
+    str_list = [str_list[selectedIndex]];
+    let newHTML = ""
+    for (let i = 0; i < str_list_all.length; i++) {
+        newHTML += "<button class='viz_area_document_buttons' id='viz_area_document_button_" + i + "'>Select Document " + (i + 1) + "</button>"
+    }
+    $('.viz_area_document_selection').html(newHTML)
+    for (let i = 0; i < str_list_all.length; i++) {
+        $('#viz_area_document_button_' + i).click(function() {
+            setSelected(i);
+        })
+    }
     if (!check_char($( "#words" ).val(), special_chars)){
       $( "#error" ).text("Your strings should not contain any of this special chars : " +  special_chars);
       $( "#error" ).toggle(true);
@@ -76,63 +90,63 @@ $(document).ready(function () {
       root.y0 = 0;
       update(root);
     }
-    ngramFreqs = {}
-    for (let i = 0; i < str_list.length; i++) {
-      let document = str_list[i];
-      for (let n = 1; n <= $("#ngramLength").val(); n++) {
-        for (let start_ind = 0; start_ind <= document.length - n; start_ind++) {
-        let ngram = document.substring(start_ind, start_ind + n);
-        if (ngramFreqs[ngram] === undefined) {
-            ngramFreqs[ngram] = {}
-            ngramFreqs[ngram][i] = 1;
-        } else if (ngramFreqs[ngram][i] === undefined) {
-            ngramFreqs[ngram][i] = 1;
-        } else {
-            ngramFreqs[ngram][i] += 1;
-        }
-        }
-      }
-    }
-    const orderedNgramFreqs = {};
-    Object.keys(ngramFreqs).sort((a, b) => {
-      if (a.length < b.length) {
-	return -1;
-      }
-      if (b.length < a.length) {
-	return 1;
-      }
-      if (a.length === b.length) {
-	return 0;
-      }
-      if (a < b) {
-	return -1;
-      } else if (b < a) {
-	return 1;
-      } else {
-	return 0;
-      }
-    }).forEach(function(key) {
-      orderedNgramFreqs[key.replace(' ', '$\\Box$')] = ngramFreqs[key];
-    });
-    let ngramText = "";
-    ngramText += "$$\\begin{matrix}"
-    for (let i = 0; i < Object.keys(orderedNgramFreqs).length; i++) {
-        ngramText += "& \\texttt{" + Object.keys(orderedNgramFreqs)[i] + "}"
-    }
-    ngramText += "\\\\"
-    for (let doc_num = 0; doc_num < str_list.length; doc_num++) {
-      ngramText += "D_" + (doc_num + 1) + " "
-      for (let i = 0; i < Object.keys(orderedNgramFreqs).length; i++) {
-	    ngramText += "&" +
-	    (orderedNgramFreqs[Object.keys(orderedNgramFreqs)[i]][doc_num] !== undefined ?
-	    orderedNgramFreqs[Object.keys(orderedNgramFreqs)[i]][doc_num] : 0)
-      }
-      ngramText += "\\\\"
-    }
-    ngramText += "\\end{matrix}$$"
-    console.log(ngramText)
-    document.getElementById('ngram-matrix-visualization-uncompressed').innerHTML = ngramText;
-    MathJax.typeset()
+    // ngramFreqs = {}
+    // for (let i = 0; i < str_list.length; i++) {
+    //   let document = str_list[i];
+    //   for (let n = 1; n <= $("#ngramLength").val(); n++) {
+    //     for (let start_ind = 0; start_ind <= document.length - n; start_ind++) {
+    //     let ngram = document.substring(start_ind, start_ind + n);
+    //     if (ngramFreqs[ngram] === undefined) {
+    //         ngramFreqs[ngram] = {}
+    //         ngramFreqs[ngram][i] = 1;
+    //     } else if (ngramFreqs[ngram][i] === undefined) {
+    //         ngramFreqs[ngram][i] = 1;
+    //     } else {
+    //         ngramFreqs[ngram][i] += 1;
+    //     }
+    //     }
+    //   }
+    // }
+    // const orderedNgramFreqs = {};
+    // Object.keys(ngramFreqs).sort((a, b) => {
+    //   if (a.length < b.length) {
+	// return -1;
+    //   }
+    //   if (b.length < a.length) {
+	// return 1;
+    //   }
+    //   if (a.length === b.length) {
+	// return 0;
+    //   }
+    //   if (a < b) {
+	// return -1;
+    //   } else if (b < a) {
+	// return 1;
+    //   } else {
+	// return 0;
+    //   }
+    // }).forEach(function(key) {
+    //   orderedNgramFreqs[key.replace(' ', '$\\Box$')] = ngramFreqs[key];
+    // });
+    // let ngramText = "";
+    // ngramText += "$$\\begin{matrix}"
+    // for (let i = 0; i < Object.keys(orderedNgramFreqs).length; i++) {
+    //     ngramText += "& \\texttt{" + Object.keys(orderedNgramFreqs)[i] + "}"
+    // }
+    // ngramText += "\\\\"
+    // for (let doc_num = 0; doc_num < str_list.length; doc_num++) {
+    //   ngramText += "D_" + (doc_num + 1) + " "
+    //   for (let i = 0; i < Object.keys(orderedNgramFreqs).length; i++) {
+	//     ngramText += "&" +
+	//     (orderedNgramFreqs[Object.keys(orderedNgramFreqs)[i]][doc_num] !== undefined ?
+	//     orderedNgramFreqs[Object.keys(orderedNgramFreqs)[i]][doc_num] : 0)
+    //   }
+    //   ngramText += "\\\\"
+    // }
+    // ngramText += "\\end{matrix}$$"
+    // console.log(ngramText)
+    // document.getElementById('ngram-matrix-visualization-uncompressed').innerHTML = ngramText;
+    // MathJax.typeset()
   });
 
   function clearSearches() {
@@ -145,7 +159,6 @@ $(document).ready(function () {
 	  newChildren = newChildren.concat(rootChildren[i].children);
 	}
       }
-      console.log(newChildren)
       rootChildren = newChildren;
     }
   }
@@ -196,8 +209,6 @@ $(document).ready(function () {
       $('#searchResultsSingle').css('color', 'green');
       $('#searchResultsSingle').text('Term found!')
     }
-    console.log(lastNode)
-    console.log(calcNumLeafNodes(lastNode))
     update(root);
 
   })
@@ -267,7 +278,6 @@ $(document).ready(function () {
     link.enter().insert("path", "g")
       .attr("class", "link")
       .style("stroke", function(d) {
-	console.log(d.wasSearched)
 	return d.wasSearched ? "#FFFF00" : (d.target._children ? "#ccc" : colorlist[d.target.seq]);
       })
 
