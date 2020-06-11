@@ -72,7 +72,11 @@
 	  align-items: center;
 	  margin-left: 25%;
 	  width: 30%;
-	}
+    }
+    #viz_area3 {
+        margin-left: 25%;
+        margin-top: 20px;
+      }
 	#viz_area {
 	  margin-left: 25%;
 	  margin-top: 20px;
@@ -80,7 +84,11 @@
 	#viz_area2 {
 	  margin-left: 25%;
 	  margin-top: 20px;
-	}
+    }
+    #viz_area4 {
+        margin-left: 25%;
+        margin-top: 20px;
+      }
 	body {
 	  display: flex;
 	  flex-direction: column;
@@ -149,7 +157,22 @@
 	  font-family: 'Roboto', sans-serif;
 	  width: fit-content;
 	  margin-left: 20px;
-	}
+    }
+    #searchContainerSingle {
+        margin-left: 25%;
+        width: 50%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-weight: 400;
+        font-family: 'Roboto', sans-serif;
+      }
+      #searchResultsSingle {
+        font-weight: 400;
+        font-family: 'Roboto', sans-serif;
+        width: fit-content;
+        margin-left: 20px;
+      }
 	.hoveredNodeText {
 	  background-color: #FFFF00;
 	}
@@ -468,11 +491,11 @@
     out whether $$S$$ appears in $$D$$.
     </p>
     <div id="searchContainer">
-      <input id="searchInput" placeholder="Search term..." />
-      <button id="submitSearch">Search</button>
-      <p id="searchResults"></p>
-    </div>
-    <svg id="viz_area" height=800 width=1000></svg>
+        <input id="searchInputSingle" placeholder="Search term..." />
+        <button id="submitSearchSingle">Search</button>
+        <p id="searchResultsSingle"></p>
+      </div>
+      <svg id="viz_area3" height=800 width=1000></svg>
     <a id="num_times_S_in_D">
       <h3 class="stbmm-article-h3">4.2. How many times does $$S$$ appear in $$D$$ ?</h3>
     </a>
@@ -495,11 +518,11 @@
     <p class="stbmm-article-content">Hover over a node to see the total
     number of leaves (equivalently, how many times that node appears in the document).
     </p>
-    <p class="stbmm-article-content" id="numLeavesText">
+    <p class="stbmm-article-content" id="numLeavesTextSingle">
     No node selected.
     </p>
-    <p class="stbmm-article-content" id="documentHighlightedP"></p>
-    <svg id="viz_area2" height=800 width=1000></svg>
+    <p class="stbmm-article-content" id="documentHighlightedPSingle"></p>
+    <svg id="viz_area4" height=800 width=1000></svg>
 
     <!-- Section 5 -->
     <hr class="byline-custom">
@@ -621,11 +644,24 @@
     <h3 class="stbmm-article-h3">7.2. Does $$S$$ appear in $$D_i$$?</h3>
 
     <p class="stbmm-article-content">Contrast this with what we asked ourselves in section <a href="#does_S_appear_in_D">4.1</a>. With multiple documents, we need to specify the specific document $$D_i$$ that we're interested in determining whether or not $$S$$ appears in. Previously, our algorithm consisted of walking down $$T$$ using the characters of $$S$$ and reporting whether or not we fall off the tree. What this algorithm was doing was telling us whether $$S$$ appears in <i>any</i> of the documents in our corpus $$C$$; this worked because $$C$$ was just the singleton containing $$D$$. Generalizing this to multiple documents requires an additional step. We perform the same tree traversal as before, reporting that $$S$$ does not appear in $$D_i$$ if we fall off, but, if we don't, we need to perform a DFS to determine if any of the leaves in the subtree belong to $$D_i$$. If so, then $$S$$ appears in $$D_i$$. Otherwise, it does not (it appears in some other $$D_j$$ where $$i \neq j$$).</p>
-
+    <div id="searchContainer">
+        <input id="searchInput" placeholder="Search term..." />
+        <button id="submitSearch">Search</button>
+        <p id="searchResults"></p>
+      </div>
+      <svg id="viz_area" height=800 width=1000></svg>
     <h3 class="stbmm-article-h3">7.3. How many times does $$S$$ appear in $$D_i$$? </h3>
 
     <p class="stbmm-article-content">The procedure for answering this question is almost exactly the same as that for answering the question in the previous section. The only difference is that we're not interested in whether or not any leaves in the subtree satisfy the property that they belong to $$D_i$$, but, rather, how many leaves satisfy this property. The practical consequence of this is that instead of stopping at the first leaf that belongs to $$D_i$$ in the subtree we reach after navigating $$T$$ with $$S$$, we actually need to explore all of the leaves in the subtree and count the number of leaves that belong to $$D_i$$.</p>
-
+    <p class="stbmm-article-content">Hover over a node to see the total
+        number of leaves (equivalently, how many times that node appears in the document).
+        </p>
+        <p class="stbmm-article-content" id="numLeavesText">
+        No node selected.
+        </p>
+        <p class="stbmm-article-content" id="documentHighlightedP"></p>
+        <svg id="viz_area2" height=800 width=1000></svg>
+    
     <a id="linear-dependencies">
       <h3 class="stbmm-article-h3">7.4. Linear Dependencies of Columns </h3>
     </a>
@@ -748,6 +784,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
   <script src="scripts/ukkonen.js"></script>
+  <script src="scripts/viz3.js"></script>
+  <script src="scripts/viz4.js"></script>
   <script src="scripts/SuffixTreeJS.js"></script>
   <script src="scripts/viz2.js"></script>
 </body>
