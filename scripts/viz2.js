@@ -26,7 +26,7 @@ var tree = d3.layout.tree()
 var diagonal = d3.svg.diagonal()
 	.projection(function(d) { return [d.y, d.x]; });
 
-var svg = d3.select("#viz_area").append("svg")
+var svg = d3.select("#viz_area2").append("svg")
     .attr("height", realHeight)
     .attr("width", realWidth)
   .append("g")
@@ -143,13 +143,13 @@ function clearSearches() {
                 newChildren = newChildren.concat(rootChildren[i].children);
             }
         }
-        console.log(newChildren)
         rootChildren = newChildren;
     }
 }
 
 function calcNumLeafNodes(node) {
     if (node.children === undefined) {
+        node.wasSearched = true;
         return 1;
     } else {
         let sum = 0;
@@ -160,45 +160,6 @@ function calcNumLeafNodes(node) {
     }
 }
 
-$('#submitSearch').click(() => {
-    clearSearches();
-    let rootChildren = tree.nodes(root)[0].children;
-    let searchTerm = $('#searchInput').val();
-    let links = tree.links(tree.nodes(root));
-    let fellOff = false;
-    let lastNode = undefined;
-    while(searchTerm.length > 0 && !fellOff) {
-        for (let i = 0; i <= rootChildren.length; i++) {
-            lastNode = rootChildren[i];
-            if (i == rootChildren.length) {
-                fellOff = true;
-                break;
-            }
-            if (searchTerm.startsWith(rootChildren[i].name)) {
-                rootChildren[i].wasSearched = true;
-                searchTerm = searchTerm.substring(rootChildren[i].name.length);
-                rootChildren = rootChildren[i].children;
-                break;
-            }
-            if (rootChildren[i].name.startsWith(searchTerm)) {
-                rootChildren[i].wasSearched = true;
-                searchTerm = "";
-                break;
-            }
-        }
-    }
-    if (fellOff) {
-        $('#searchResults').css('color', 'red');
-        $('#searchResults').text('Term not found.')
-    } else {
-        $('#searchResults').css('color', 'green');
-        $('#searchResults').text('Term found!')
-    }
-    console.log(lastNode)
-    console.log(calcNumLeafNodes(lastNode))
-    update(root);
-
-})
 
 d3.select(self.frameElement).style("height", "800px");
 
@@ -340,4 +301,24 @@ getDepth = function (jdata) {
     return 1 + depth
 }
 $('#show').click();
+$('.node').mouseenter((e) => {
+    clearSearches();
+    let transform = String(e.delegateTarget.attributes[1].nodeValue).split(',');
+    let y = Number(transform[0].substring(10));
+    let x = Number(transform[1].substring(0, 5));
+    let foundNode = undefined;
+    console.log(x, y)
+    var nodes = tree.nodes(root);
+    for (let i = 0; i < nodes.length; i++) {
+        if (Math.abs(x - nodes[i].x0) < 0.1 && Math.abs(y - nodes[i].y0) < 0.1) {
+            foundNode = nodes[i];            
+            break;
+        }
+    }
+    foundNode.wasSearched = true;
+    $('#numLeavesText').text(foundNode === undefined ? 'No node selected.': 
+    'Selected node "' + foundNode.suffix +'" appears ' + calcNumLeafNodes(foundNode) + ' times.');
+
+    update(root);
+});
 });

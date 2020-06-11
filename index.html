@@ -76,6 +76,10 @@
             margin-left: 25%;
             margin-top: 20px;
         }
+        #viz_area2 {
+            margin-left: 25%;
+            margin-top: 20px;
+        }
         body {
             display: flex;
             flex-direction: column;
@@ -120,6 +124,26 @@
             margin-left: auto;
             margin-right: auto;
             text-align: center;
+        }
+        #ngram-matrix-visualization-uncompressed {
+            margin-left: 25%;
+            text-align: center;
+            width: 50%;
+        }
+        #searchContainer {
+            margin-left: 25%;
+            width: 50%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            font-weight: 400;
+            font-family: 'Roboto', sans-serif;
+        }
+        #searchResults {
+            font-weight: 400;
+            font-family: 'Roboto', sans-serif;
+            width: fit-content;
+            margin-left: 20px;
         }
     </style>
 </head>
@@ -257,6 +281,29 @@
             C &= \{D_1, D_2, D_3\}
         \end{align*}$$
         </p>
+        <h3 class="stbmm-article-h3">Define your own documents.</h3>
+        <p class="stbmm-article-content">Throughout this article, we have visualizations
+            of some of the concepts we describe. You can define the documents used for these visualizations here
+            (in comma-separated format),
+            or you can use the documents we provide! To keep visualizations smaller, 
+            we also allow you to select the maximum N-gram size.
+            <dt-fn>Note: While many of these algorithms operate in linear time, 
+                our visualizations do not (since we have to display them). Thus, 
+                these visualizations tend to work better with smaller document sizes.
+            </dt-fn>
+        </p>
+        <textarea id="words" class="stbmm-article-textarea">
+Hi my name is Varun, 
+Hi my name is German,
+Hi my name is Eric,
+Hi my name is Kevin
+        </textarea>
+        <br>
+        <div id="visualize-options-container">
+            <button class="stbmm-article-button" id="show">Set Documents</button>
+            <span id="ngram-selecter-text">N:</span>
+            <input id="ngramLength" type="number" value="3"/>
+        </div>
         <h3 class="stbmm-article-h3">N-gram and N-gram Set</h3>
         <p class="stbmm-article-content">
             Informally, an N-gram is a string of $$N$$ letters
@@ -338,6 +385,11 @@
                 \[X_{S_8} = \begin{pmatrix}0 \\ 1\\ 0\end{pmatrix}\]
             </div>
         </div>
+        <p class="stbmm-article-content">
+            Here you can see the N-gram matrix for the documents you selected. 
+            (Note: we transpose this matrix so that it can fit on the page).
+        </p>
+        <div id="ngram-matrix-visualization-uncompressed"></div>
         <!-- Section 4 -->
         <h2 class="stbmm-article-h2">Using Suffix Trees to Understand N-gram Matrices</h2>
         <p class="stbmm-article-content">
@@ -364,9 +416,12 @@
             $$T$$. This leads to an extremely intuitive algorithm for finding 
             out whether $$S$$ appears in $$D$$.
         </p>
-        <div class="stbmm-article-image">
-            <img src="img1.png"  id="stbmm-article-img1" />
+        <div id="searchContainer">
+            <input id="searchInput" placeholder="Search term..." />
+            <button id="submitSearch">Search</button>
+            <p id="searchResults"></p>
         </div>
+        <svg id="viz_area" height=800 width=1000></svg>
         <h3 class="stbmm-article-h3">How many times does $$S$$ appear in $$D$$ ?</h3>
         <p class="stbmm-article-content">
             By the Fundamental Theorem of Stringology, this is equivalent to 
@@ -384,6 +439,13 @@
             . This can be found efficiently 
             with a simple depth-first traversal.
         </p>
+        <p class="stbmm-article-content">Hover over a node to see the total 
+            number of leaves (equivalently, how many times that node appears in the document).
+        </p>
+        <p class="stbmm-article-content" id="numLeavesText">
+            No node selected.
+        </p>
+        <svg id="viz_area2" height=800 width=1000></svg>
         <div class="stbmm-article-image">
             <img src="img2.png"  id="stbmm-article-img2" />
         </div>
@@ -571,21 +633,8 @@
         <h2 class="stbmm-article-h2">9. Conclusion</h2>
             <p class="stbmm-article-content">The $$N$$-gram matrix, a critical component of many popular machine learning models in the field of natural language processing, can be represented in linear space and multiplied in linear time. This is done by first recognizing and removing redundant N-grams which leaves us with a node matrix $$\mathcal{X}$$, and then resolving the linear dependencies between the remaining columns which leaves us with a leaf label matrix $$\Phi$$ which has a linear number of nonzero entries; these kinds of matrices can be represented in linear space and multiplied in linear time. Multiplying $$\mathcal{X}$$ with a vector $$w$$ requires transforming $$w$$ into $$\beta$$ via a top down traversal of the corresponding generalized suffix tree, propagating weights downward. Multiplying $$\mathcal{X}^T$$ with a vector $$y$$ requires a bottom up traversal of the corresponding generalized suffix tree, propagating intermediate results upward. None of these incredible improvements would have been possible without having recognized and explored the intimate relationship between N-gram matrices and generalized suffix trees.</p>
         <!-- Visualization of Suffix Tree -->
-        <h2 class="stbmm-article-h2">Add your documents.</h2>
-        <textarea id="words" class="stbmm-article-textarea">
-Hi my name is Varun, 
-Hi my name is German,
-Hi my name is Eric,
-Hi my name is Kevin
-        </textarea>
-        <br>
-        <div id="visualize-options-container">
-            <button class="stbmm-article-button" id="show">Visualize Suffix Tree</button>
-            <span id="ngram-selecter-text">N:</span>
-            <input id="ngramLength" type="number" value="3"/>
-        </div>
+        
         <svg id="viz_area" height=800 width=1000></svg>
-        <div id="ngram-matrix-visualization-uncompressed"></div>
     </dt-article>
     <dt-appendix>
     </dt-appendix>
@@ -605,6 +654,7 @@ Hi my name is Kevin
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
         <script src="scripts/ukkonen.js"></script>
         <script src="scripts/SuffixTreeJS.js"></script>
+        <script src="scripts/viz2.js"></script>
 </body>
 
 
