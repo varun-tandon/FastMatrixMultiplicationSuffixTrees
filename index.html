@@ -44,6 +44,7 @@
             font-weight: 600;
             font-family: 'Libre Franklin', sans-serif;
             margin-left: 25%;
+            width: 60%;
         }
         p.stbmm-article-content {
             font-weight: 400;
@@ -159,7 +160,9 @@
             width: 50%;
             margin-left: 25%;
         }
-
+        .l-body {
+            margin-left: 25%;
+        }
     </style>
 </head>
 
@@ -470,9 +473,6 @@ Hi my name is Kevin
         </p>
         <p class="stbmm-article-content" id="documentHighlightedP"></p>
         <svg id="viz_area2" height=800 width=1000></svg>
-        <div class="stbmm-article-image">
-            <img src="img2.png"  id="stbmm-article-img2" />
-        </div>
         <!-- Section 5 -->
         <a id="redundancies_in_X">
         <h2 class="stbmm-article-h2">5. Developing Useful Abstractions</h2>
@@ -502,7 +502,7 @@ Hi my name is Kevin
             representative element from each class.
         </p>
         <div class="stbmm-article-image">
-            <img src="img3.png"  id="stbmm-article-img3" /> 
+            <img src="images/img3.png"  id="stbmm-article-img3" /> 
         </div>
         <p class="stbmm-article-content">
             The upshot is that some N-grams can be safely eliminated from 
@@ -559,7 +559,7 @@ Hi my name is Kevin
                 </div>
 
                 <div class="stbmm-article-image">
-                    <img src="img4.png"  id="stbmm-article-img4" />
+                    <img src="images/img4.png"  id="stbmm-article-img4" />
                 </div>
 
             <h3 class="stbmm-article-h3">6.2. A Complex Example</h3>
@@ -574,7 +574,7 @@ Hi my name is Kevin
                 </div>
 
                 <div class="stbmm-article-image">
-                    <img src="img5.png"  id="stbmm-article-img5" />
+                    <img src="images/img5.png"  id="stbmm-article-img5" />
                 </div>
 
         <!-- Section 7 -->
@@ -666,20 +666,31 @@ Hi my name is Kevin
         <!-- Section 9 -->
         <h2 class="stbmm-article-h2">9. Does It Actually Work?</h2>
 
-            <p class="stbmm-article-content">After excessively studying the paper, the moment of truth approahed: the theory may work out, but is the multiplication rutnime actually linear in practice? We scraped Twitter for text data, constructed an N-gram matrix and a suffix tree, and then replicated section <a href="#computing_Xw">8.1</a> in python. As we increased the size of the corpus, we timed how long the program takes to run; we conducted 20 trials per corpus size and recorded the average runtime. Here are our results:</p>
+            <p class="stbmm-article-content">
+                After excessively studying the paper, the moment of truth 
+                approached: the theory may work out, but is the multiplication 
+                runtime actually linear in practice? We used a dataset of tweets 
+                for text data, constructed an N-gram matrix and a suffix tree, 
+                and then replicated section <a href="#computing_Xw">8.1</a> in Python. 
+                As we increased the size of the corpus, we timed how long the 
+                program took to run, conducting 20 trials per corpus size with 
+                randomized vectors per corpus. We then took the average of the runs. Here are our results:</p>
 
             <div class="stbmm-article-image">
-                <img src="imgruntime.png"  id="stbmm-article-imgruntime" />
+                <img src="images/imgruntime.png"  id="stbmm-article-imgruntime" />
             </div>
 
-            <p class="stbmm-article-content">The graph above looks linear with a few outliers, which confirms that the multiplication is carried out in linear time. Feel free to check out the python scripts (and the code for this website) <a href="https://github.com/varun-tandon/FastMatrixMultiplicationSuffixTrees">here</a>!</p>
+            <p class="stbmm-article-content">The graph above looks 
+                linear with a few outliers, which confirms 
+                that the multiplication is carried out in linear time. 
+                Feel free to check out the Python scripts (and the code for this website) 
+                <a href="https://github.com/varun-tandon/FastMatrixMultiplicationSuffixTrees">here</a>!</p>
 
         <!-- Section 10 -->
         <h2 class="stbmm-article-h2">10. Conclusion</h2>
             <p class="stbmm-article-content">The N-gram matrix, a critical component of many popular machine learning models in the field of natural language processing, can be represented in linear space and multiplied in linear time. This is done by first recognizing and removing redundant N-grams which leaves us with a node matrix $$\mathcal{X}$$, and then resolving the linear dependencies between the remaining columns which leaves us with a leaf label matrix $$\Phi$$ which has a linear number of nonzero entries; these kinds of matrices can be represented in linear space and multiplied in linear time. Multiplying $$\mathcal{X}$$ with a vector $$w$$ requires transforming $$w$$ into $$\beta$$ via a top down traversal of the corresponding generalized suffix tree, propagating weights downward. Multiplying $$\mathcal{X}^T$$ with a vector $$y$$ requires a bottom up traversal of the corresponding generalized suffix tree, propagating intermediate results upward. None of these incredible improvements would have been possible without having recognized and explored the intimate relationship between N-gram matrices and generalized suffix trees.</p>
         <!-- Visualization of Suffix Tree -->
         
-        <svg id="viz_area" height=800 width=1000></svg>
     </dt-article>
     <dt-appendix>
     </dt-appendix>
