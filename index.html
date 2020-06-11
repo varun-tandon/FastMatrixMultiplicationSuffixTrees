@@ -131,7 +131,7 @@
         <dt-byline></dt-byline>
     
         <!-- Section 1 -->
-        <h2 class="stbmm-article-h2">Motivation</h2>
+        <h2 class="stbmm-article-h2">1. Motivation</h2>
         <p class="stbmm-article-content">
             A dataset is matrix in math language. Many modern machine learning 
             models use matrices to encode the information required to solve a 
@@ -149,11 +149,13 @@
 
         </p>
         <!-- Section 2 -->
-        <h2 class="stbmm-article-h2">Matrix-Vector Multiplication in Linear Space and Time</h2>
+        <a id="mv_mult_in_linear_time">
+        <h2 class="stbmm-article-h2">2. Matrix-Vector Multiplication in Linear Space and Time</h2>
+        </a>
         <p class="stbmm-article-content">
             Before we begin, let’s address the possibility of matrix-vector multiplication in linear space and time.
         </p>
-        <h3 class="stbmm-article-h3">Cursory Analysis</h3>
+        <h3 class="stbmm-article-h3">2.1. Cursory Analysis</h3>
         <p class="stbmm-article-content">
             In terms of space, if we're trying to store a $$3 \times 3$$ matrix, 
             shouldn't this take 9 units of memory?
@@ -185,7 +187,7 @@
              number of nonzero entries-a type of <i>sparse</i> matrix-then what 
              we want is indeed possible. Let's see why.
         </p>
-        <h3 class="stbmm-article-h3">Storing Matrices in Linear Space</h3>
+        <h3 class="stbmm-article-h3">2.2. Storing Matrices in Linear Space</h3>
         <p class="stbmm-article-content">
             If we only have a linear number of nonzero entries, the overwhelming 
             majority of the entries are zero. Where there's a lot of redundancy, 
@@ -214,7 +216,7 @@
             of nonzero entries by assumption, storing such a matrix only takes 
             linear space.
         </p>
-        <h3 class="stbmm-article-h3">Multiplying Matrices in Linear Time</h3>
+        <h3 class="stbmm-article-h3">2.3. Multiplying Matrices in Linear Time</h3>
         <p class="stbmm-article-content">
             Given the representation of sparse matrices described in the previous
             section, it's not too difficult to see that we can matrix-vector 
@@ -231,14 +233,14 @@
             do N-gram matrices obey this constraint?
         </p>
         <!-- Section 3 -->
-        <h2 class="stbmm-article-h2">Basic Terminology</h2>
+        <h2 class="stbmm-article-h2">3. Basic Terminology</h2>
         <p class="stbmm-article-content">
             Before we can answer this question, let's define what an 
             N-gram matrix is. Along the way, we pick up a few other 
             pieces of terminology and notation.
         </p>
         <a id="document_and_corpus">
-        <h3 class="stbmm-article-h3">Document and Corpus</h3>
+        <h3 class="stbmm-article-h3">3.1. Document and Corpus</h3>
         </a>
         <p class="stbmm-article-content">
             Informally, a document is a string and a corpus is a collection of 
@@ -257,7 +259,9 @@
             C &= \{D_1, D_2, D_3\}
         \end{align*}$$
         </p>
-        <h3 class="stbmm-article-h3">N-gram and N-gram Set</h3>
+        <a id="ngram_and_ngram_set">
+        <h3 class="stbmm-article-h3">3.2. N-gram and N-gram Set</h3>
+        </a>
         <p class="stbmm-article-content">
             Informally, an N-gram is a string of $$N$$ letters
             <dt-fn>An N-gram could also mean a sequence of $N$ words, phonemes, 
@@ -301,13 +305,13 @@
         <div id="stbmm-article-equation32-bottom">
             $$\mathcal{S} = \{S_1, S_2, S_3, S_4, S_5, S_6, S_7, S_8, S_9\}$$
         </div>
-        <h3 class="stbmm-article-h3">N-gram Matrix</h3>
+        <h3 class="stbmm-article-h3">3.3. N-gram Matrix</h3>
         <p class="stbmm-article-content">
             An N-gram matrix $$X$$ is a data structure that stores the 
             frequencies with which the N-grams in an N-gram set $$\mathcal{S}$$ 
             appear in a corpus $$C$$. For instance, take our corpus from 
             section <a href="#document_and_corpus">3.1</a> and N-gram set from section 
-            \ref{ngram_and_ngram_set}. The corresponding N-gram matrix is shown 
+            <a href="#ngram_and_ngram_set">3.2</a>. The corresponding N-gram matrix is shown 
             below. Though arbitrary, it's conventional to have the rows represent 
             the documents and columns represent the N-grams.
         </p>
@@ -339,7 +343,7 @@
             </div>
         </div>
         <!-- Section 4 -->
-        <h2 class="stbmm-article-h2">Using Suffix Trees to Understand N-gram Matrices</h2>
+        <h2 class="stbmm-article-h2">4. Using Suffix Trees to Understand N-gram Matrices</h2>
         <p class="stbmm-article-content">
             At this point we've established that if we can somehow reformulate 
             an N-gram matrix in terms of a sparse matrix, then we can store it 
@@ -349,7 +353,9 @@
             In the following sections, let $$S$$ be an N-gram, $$D$$ be a 
             document, and $$T$$ be the suffix tree for $$D$$.
         </p>
-        <h3 class="stbmm-article-h3">Does $$S$$ Appear in $$D$$ ?</h3>
+        <a id="does_S_appear_in_D">
+        <h3 class="stbmm-article-h3">4.1. Does $$S$$ Appear in $$D$$ ?</h3>
+        </a>
         <p class="stbmm-article-content">
             First of all, what does it mean for $$S$$ to <i>appear</i> in $$D$$? 
             One way to think about this is that $$S$$ appears in $$D$$ if $$S$$ is a 
@@ -367,7 +373,9 @@
         <div class="stbmm-article-image">
             <img src="img1.png"  id="stbmm-article-img1" />
         </div>
-        <h3 class="stbmm-article-h3">How many times does $$S$$ appear in $$D$$ ?</h3>
+        <a id="num_times_S_in_D">
+        <h3 class="stbmm-article-h3">4.2. How many times does $$S$$ appear in $$D$$ ?</h3>
+        </a>
         <p class="stbmm-article-content">
             By the Fundamental Theorem of Stringology, this is equivalent to 
             the question: how many suffixes of $$D$$ is $$S$$ a prefix of? 
@@ -388,7 +396,9 @@
             <img src="img2.png"  id="stbmm-article-img2" />
         </div>
         <!-- Section 5 -->
-        <h2 class="stbmm-article-h2">Developing Useful Abstractions</h2>
+        <a id="redundancies_in_X">
+        <h2 class="stbmm-article-h2">5. Developing Useful Abstractions</h2>
+        </a>
         <p class="stbmm-article-content">
             In machine learning tasks, removing redundant features can yield 
             improvements in memory usage, training time, and model performance. 
@@ -396,7 +406,9 @@
             has the same frequency as some other $N$-gram. Let's see how we can 
             use $T$ to identify such \ngrams in $X$. 
         </p>
-        <h3 class="stbmm-article-h3">Equivalence Classes of N-grams and the Node Matrix $$\mathcal{X}$$</h3>
+        <a id="equivalence_classes">
+        <h3 class="stbmm-article-h3">5.1. Equivalence Classes of N-grams and the Node Matrix $$\mathcal{X}$$</h3>
+        </a>
         <p class="stbmm-article-content">
             To make our discussion concrete, let $$D = \texttt{MISSISSIPPI}$$. 
             Note that the N-grams $$\texttt{SIS}, \texttt{SISI}, \texttt{SISSIP}, 
@@ -405,7 +417,7 @@
             clear that if you use any of these N-grams to traverse $$T$$, you end 
             up at (or right before) the same node. Because this is the case, 
             these N-grams will all have the same frequencies, as we demonstrated 
-            in section. In general, there are certain 
+            in section <a href="#num_times_S_in_D">4.2</a>. In general, there are certain 
             <i>equivalence classes</i> of N-grams corresponding to the nodes 
             of the suffix tree, the only exception being the root. Whenever you 
             have equivalence classes, it suffices to only consider a single 
@@ -423,11 +435,13 @@
             pruning these redundant N-grams actually unlocks further speedups by 
             revealing interrelationships between columns of the $$\mathcal{X}$$. 
         </p>
-        <h3 class="stbmm-article-h3">From a Mechanical to an Operational Description</h3>
+        <a id="operational_description">
+        <h3 class="stbmm-article-h3">5.2. From a Mechanical to an Operational Description</h3>
+        </a>
         <p class="stbmm-article-content">
-            With the analysis we performed in section \ref{redundancies_in_X}, 
+            With the analysis we performed in section <a href="#redundancies_in_X">5</a>, 
             we can revisit the question we asked ourselves in section 
-            \ref{num_times_S_in_D}. Previously, we had a <i>mechanical</i> 
+            <a href="#num_times_S_in_D">4.2</a>. Previously, we had a <i>mechanical</i> 
             description of the answer: start at the root of the suffix tree 
             $$T$$, make your way down towards the leaves using the characters of 
             $$S$$, and perform a DFS to determine the number of leaf nodes that 
@@ -441,7 +455,7 @@
         <!-- Section 6 -->
         <h2 class="stbmm-article-h2">6. Properties of the Node Matrix $$\mathcal{X}$$</h2>
             <p class="stbmm-article-content">
-                Armed with the operational description from section \ref{operational_description}, 
+                Armed with the operational description from section <a href="#operational_description">5.2</a>, 
                 we'll see that even after eliminating useless N-grams, there's 
                 <i>still</i> redundant information in our N-gram matrix. 
                 In particular, the frequency with which node appears is equal 
@@ -490,27 +504,31 @@
 
             <p class="stbmm-article-content">While we didn't explicitly mention it, we actually made two simplifying assumptions thus far in our analysis. First, we limited ourselves to a single document, which made $$\mathcal{X}$$ and $$X$$ simple row vectors. Second, we constrained ourselves to the case where $$\mathcal{S}$$ includes every equivalence class of N-grams, which made the linear dependencies in $$\mathcal{X}$$ and $$X$$ easier to reason about. In this section, we relax the first assumption. Relaxing the second has been left as an exercise for the adventurous reader.</p>
 
-            <h3 class="stbmm-article-h3"> Generalized Suffix Trees </h3>
+            <h3 class="stbmm-article-h3">7.1. Generalized Suffix Trees </h3>
 
                 <p class="stbmm-article-content">Very little of our analysis actually changes when we consider multiple documents; the most notable difference is that we now need to build a <i>generalized</i> suffix tree. Because such data structures are not the focus of this article, we won't dwell on their intricacies. It suffices to say that this is done by taking a corpus, appending unique sentinel characters to each document so we can differentiate the suffixes of one document from those of another, and constructing a Patricia trie over the suffixes of these slightly modified documents. Let's revisit some of the previous questions we asked ourselves to see how the generalized suffix tree will help us.</p>
 
-            <h3 class="stbmm-article-h3">Does $$S$$ appear in $$D_i$$?</h3>
+            <h3 class="stbmm-article-h3">7.2. Does $$S$$ appear in $$D_i$$?</h3>
 
-                <p class="stbmm-article-content">Contrast this with what we asked ourselves in section \ref{does_S_appear_in_D}. With multiple documents, we need to specify the specific document $$D_i$$ that we're interested in determining whether or not $$S$$ appears in. Previously, our algorithm consisted of walking down $$T$$ using the characters of $$S$$ and reporting whether or not we fall off the tree. What this algorithm was doing was telling us whether $$S$$ appears in <i>any</i> of the documents in our corpus $$C$$; this worked because $$C$$ was just the singleton containing $$D$$. Generalizing this to multiple documents requires an additional step. We perform the same tree traversal as before, reporting that $$S$$ does not appear in $$D_i$$ if we fall off, but, if we don't, we need to perform a DFS to determine if any of the leaves in the subtree belong to $$D_i$$. If so, then $$S$$ appears in $$D_i$$. Otherwise, it does not (it appears in some other $$D_j$$ where $$i \neq j$$).</p>
+                <p class="stbmm-article-content">Contrast this with what we asked ourselves in section <a href="#does_S_appear_in_D">4.1</a>. With multiple documents, we need to specify the specific document $$D_i$$ that we're interested in determining whether or not $$S$$ appears in. Previously, our algorithm consisted of walking down $$T$$ using the characters of $$S$$ and reporting whether or not we fall off the tree. What this algorithm was doing was telling us whether $$S$$ appears in <i>any</i> of the documents in our corpus $$C$$; this worked because $$C$$ was just the singleton containing $$D$$. Generalizing this to multiple documents requires an additional step. We perform the same tree traversal as before, reporting that $$S$$ does not appear in $$D_i$$ if we fall off, but, if we don't, we need to perform a DFS to determine if any of the leaves in the subtree belong to $$D_i$$. If so, then $$S$$ appears in $$D_i$$. Otherwise, it does not (it appears in some other $$D_j$$ where $$i \neq j$$).</p>
 
-            <h3 class="stbmm-article-h3"> How many times does $$S$$ appear in $$D_i$$? </h3>
+            <h3 class="stbmm-article-h3">7.3. How many times does $$S$$ appear in $$D_i$$? </h3>
 
                 <p class="stbmm-article-content">The procedure for answering this question is almost exactly the same as that for answering the question in the previous section. The only difference is that we're not interested in whether or not any leaves in the subtree satisfy the property that they belong to $$D_i$$, but, rather, how many leaves satisfy this property. The practical consequence of this is that instead of stopping at the first leaf that belongs to $$D_i$$ in the subtree we reach after navigating $$T$$ with $$S$$, we actually need to explore all of the leaves in the subtree and count the number of leaves that belong to $$D_i$$.</p>
 
-            <h3 class="stbmm-article-h3"> Linear Dependencies of Columns </h3>
+            <a id="linear-dependencies">
+            <h3 class="stbmm-article-h3">7.4. Linear Dependencies of Columns </h3>
+            </a>
 
                 <p class="stbmm-article-content">An interesting and important observation is that the columns of the N-gram matrix are still interrelated when we generalized to multiple documents. The reason why this is the case is because these interrelationships hold for each individual row in the $N$-gram matrix and, because the rows do not interact, these same relationships still hold when we consider all of the rows simultaneously.</p>
         <!-- Section 8 -->
         <h2 class="stbmm-article-h2">8. Multiplying N-gram Matrices in Linear Space and Time</h2>
-            <p class="stbmm-article-content">Alas! Our journey has come to an end; everything is in place to discuss how we can multiply $$N$$-gram matrices in linear space and time. To be pedantic, this technique doesn't apply to arbitrary $$N$$-gram matrices but specifically to node matrices ($$N$$-gram matrices without redundant columns). This isn't really a limitation, however, because, as mentioned in section 5.1, this is almost always what we want.</p>
+            <p class="stbmm-article-content">Alas! Our journey has come to an end; everything is in place to discuss how we can multiply N-gram matrices in linear space and time. To be pedantic, this technique doesn't apply to arbitrary N-gram matrices but specifically to node matrices (N-gram matrices without redundant columns). This isn't really a limitation, however, because, as mentioned in section <a href="#equivalence_classes">5.1</a>, this is almost always what we want.</p>
 
+            <a id="computing_Xw">
             <h3 class="stbmm-article-h3">8.1 Computing $$\mathcal{X}w$$ in Linear Space and Time</h3>
-                <p class="stbmm-article-content"> We saw in section \ref{linear-dependencies} that if $$p$$ was a node in $$T$$ and $$c_1, \dots, c_n$$ were its children, then $$\mathcal{X} = \sum_i \mathcal{X}_{c_i}$$. This is an interesting observation, but what does it have to do with efficient matrix-vector multiplication? Well, let's assume for the moment that $$p$$ and $$c_1, \dots, c_n$$ were the only nodes in our generalized suffix tree. This means that our node matrix might
+            </a>
+                <p class="stbmm-article-content"> We saw in section <a href="#linear-dependencies">7.4</a> that if $$p$$ was a node in $$T$$ and $$c_1, \dots, c_n$$ were its children, then $$\mathcal{X} = \sum_i \mathcal{X}_{c_i}$$. This is an interesting observation, but what does it have to do with efficient matrix-vector multiplication? Well, let's assume for the moment that $$p$$ and $$c_1, \dots, c_n$$ were the only nodes in our generalized suffix tree. This means that our node matrix might
                     <dt-fn>Any permutation of the columns would be an equally valid node matrix.</dt-fn>
                     look something like</p>
                 
@@ -537,15 +555,15 @@
                     \end{align*}
                     </div>
 
-                    <p class="stbmm-article-content">This insight—the ability to reformulate our original operation in terms of a different matrix and vector—is a general one and is not limited to the specific example considered above. The interpretation of this result is that we don't <i>actually</i> need to multiply any of the columns corresponding to an internal node $p$ of $$T$$; we can \textit{simulate} this by passing the number we would've needed to multiply $$\mathcal{X}_p$$ by—$$w_p$$—down to $$p$$'s children.</p>
+                    <p class="stbmm-article-content">This insight—the ability to reformulate our original operation in terms of a different matrix and vector—is a general one and is not limited to the specific example considered above. The interpretation of this result is that we don't <i>actually</i> need to multiply any of the columns corresponding to an internal node $$p$$ of $$T$$; we can \textit{simulate} this by passing the number we would've needed to multiply $$\mathcal{X}_p$$ by—$$w_p$$—down to $$p$$'s children.</p>
 
                 <h5 class="stbmm-article-h5">8.1.2. Analyzing the Space and Time Complexity</h5>
 
-                    <p class="stbmm-article-content"> In general, the only nonzero columns in matrix $$\Phi$$ are going to be the ones that correspond to the leaves in $$T$$. Because there are a linear number of leaves in a suffix tree, there are a linear number of nonzero columns in $$\Phi$$. Since leaves correspond to suffixes and each suffix can only belong to one document (due to the unique sentinels we appended to each document during the construction of $$T$$), each of these columns has exactly one nonzero entry. This means that $$\Phi$$ satisfies the sparsity condition described in section \ref{mv_mult_in_linear_time}, which allows $$\Phi$$ to being stored in linear space and multiplied in linear time. Constructing $$\beta$$ can also be done in linear time by performing a simple top down traversal of the suffix tree, which has a linear number of nodes. </p>
+                    <p class="stbmm-article-content"> In general, the only nonzero columns in matrix $$\Phi$$ are going to be the ones that correspond to the leaves in $$T$$. Because there are a linear number of leaves in a suffix tree, there are a linear number of nonzero columns in $$\Phi$$. Since leaves correspond to suffixes and each suffix can only belong to one document (due to the unique sentinels we appended to each document during the construction of $$T$$), each of these columns has exactly one nonzero entry. This means that $$\Phi$$ satisfies the sparsity condition described in section <a href="#mv_mult_in_linear_time">2</a>, which allows $$\Phi$$ to being stored in linear space and multiplied in linear time. Constructing $$\beta$$ can also be done in linear time by performing a simple top down traversal of the suffix tree, which has a linear number of nodes. </p>
 
             <h3 class="stbmm-article-h3">8.2. Computing $$\mathcal{X}^Ty$$ in Linear Space and Time</h3>
 
-                <p class="stbmm-article-content">Depending on the context, it may be necessary to multiply the transpose of the node matrix instead. This can also be done in linear time. To see why this is the case, let's reuse the setup from section \ref{computing_Xw}.</p>
+                <p class="stbmm-article-content">Depending on the context, it may be necessary to multiply the transpose of the node matrix instead. This can also be done in linear time. To see why this is the case, let's reuse the setup from section <a href="#computing_Xw">8.1</a>.</p>
 
                 <div class="stbmm-article-equation"> \[\mathcal{X}^T = \begin{pmatrix} \mathcal{X}_{c_1} & \dots & \mathcal{X}_{c_n} & \mathcal{X}_p \end{pmatrix}^T\] </div>
 
@@ -568,8 +586,18 @@
 
 
         <!-- Section 9 -->
-        <h2 class="stbmm-article-h2">9. Conclusion</h2>
-            <p class="stbmm-article-content">The $$N$$-gram matrix, a critical component of many popular machine learning models in the field of natural language processing, can be represented in linear space and multiplied in linear time. This is done by first recognizing and removing redundant N-grams which leaves us with a node matrix $$\mathcal{X}$$, and then resolving the linear dependencies between the remaining columns which leaves us with a leaf label matrix $$\Phi$$ which has a linear number of nonzero entries; these kinds of matrices can be represented in linear space and multiplied in linear time. Multiplying $$\mathcal{X}$$ with a vector $$w$$ requires transforming $$w$$ into $$\beta$$ via a top down traversal of the corresponding generalized suffix tree, propagating weights downward. Multiplying $$\mathcal{X}^T$$ with a vector $$y$$ requires a bottom up traversal of the corresponding generalized suffix tree, propagating intermediate results upward. None of these incredible improvements would have been possible without having recognized and explored the intimate relationship between N-gram matrices and generalized suffix trees.</p>
+        <h2 class="stbmm-article-h2">9. Does It Actually Work?</h2>
+
+            <p class="stbmm-article-content">After excessively studying the paper, the moment of truth approahed: the theory may work out, but is the multiplication rutnime actually linear in practice? We scraped Twitter for text data, constructed an N-gram matrix and a suffix tree, and then replicated section <a href="#computing_Xw">8.1</a> in python. As we increased the size of the corpus, we timed how long the program takes to run; we conducted 20 trials per corpus size and recorded the average runtime. Here are our results:</p>
+
+            <div class="stbmm-article-image">
+                <img src="imgruntime.png"  id="stbmm-article-imgruntime" />
+            </div>
+
+            <p class="stbmm-article-content">The graph above looks linear with a few outliers, which confirms that the multiplication is carried out in linear time. Feel free to check out the python scripts (and the code for this website) <a href="https://github.com/varun-tandon/FastMatrixMultiplicationSuffixTrees">here</a>!</p>
+
+        <h2 class="stbmm-article-h2">10. Conclusion</h2>
+            <p class="stbmm-article-content">The N-gram matrix, a critical component of many popular machine learning models in the field of natural language processing, can be represented in linear space and multiplied in linear time. This is done by first recognizing and removing redundant N-grams which leaves us with a node matrix $$\mathcal{X}$$, and then resolving the linear dependencies between the remaining columns which leaves us with a leaf label matrix $$\Phi$$ which has a linear number of nonzero entries; these kinds of matrices can be represented in linear space and multiplied in linear time. Multiplying $$\mathcal{X}$$ with a vector $$w$$ requires transforming $$w$$ into $$\beta$$ via a top down traversal of the corresponding generalized suffix tree, propagating weights downward. Multiplying $$\mathcal{X}^T$$ with a vector $$y$$ requires a bottom up traversal of the corresponding generalized suffix tree, propagating intermediate results upward. None of these incredible improvements would have been possible without having recognized and explored the intimate relationship between N-gram matrices and generalized suffix trees.</p>
         <!-- Visualization of Suffix Tree -->
         <h2 class="stbmm-article-h2">Add your documents.</h2>
         <textarea id="words" class="stbmm-article-textarea">
