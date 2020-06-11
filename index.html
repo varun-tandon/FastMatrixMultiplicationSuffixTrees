@@ -370,7 +370,70 @@
             <img src="img2.png"  id="stbmm-article-img2" />
         </div>
         <!-- Section 5 -->
+        <h2 class="stbmm-article-h2">Developing Useful Abstractions</h2>
+        <p class="stbmm-article-content">
+            In machine learning tasks, removing redundant features can yield 
+            improvements in memory usage, training time, and model performance. 
+            For \ngram matrices, this amounts to removing \ngrams that always 
+            has the same frequency as some other $N$-gram. Let's see how we can 
+            use $T$ to identify such \ngrams in $X$. 
+        </p>
+        <h3 class="stbmm-article-h3">Equivalence Classes of N-grams and the Node Matrix X</h3>
+        <p class="stbmm-article-content">
+            To make our discussion concrete, let $$D = \texttt{MISSISSIPPI}$$. 
+            Note that the N-grams $$\texttt{SIS}, \texttt{SISI}, \texttt{SISSIP}, 
+            \texttt{SISSIPP}$$, and $$\texttt{SISSIPPI}$$ have exactly the same 
+            frequencies; this is no coincidence. From the suffix tree, it's 
+            clear that if you use any of these N-grams to traverse $$T$$, you end 
+            up at (or right before) the same node. Because this is the case, 
+            these N-grams will all have the same frequencies, as we demonstrated 
+            in section. In general, there are certain 
+            <i>equivalence classes</i> of N-grams corresponding to the nodes 
+            of the suffix tree, the only exception being the root. Whenever you 
+            have equivalence classes, it suffices to only consider a single 
+            representative element from each class.
+        </p>
+        <div class="stbmm-article-image">
+            <img src="img3.png"  id="stbmm-article-img3" /> 
+        </div>
+        <p class="stbmm-article-content">
+            The upshot is that some N-grams can be safely eliminated from 
+            $$\mathcal{S}$$ without impacting model performance while decreasing memory 
+            usage and training time, which removes potentially a large number 
+            of columns from X. We call the resulting matrix the <i>node matrix</i>
+            and give it the symbol $$\mathcal{X}$$.  As we will see in the next section, 
+            pruning these redundant N-grams actually unlocks further speedups by 
+            revealing interrelationships between columns of the $$\mathcal{X}$$. 
+        </p>
+        <h3 class="stbmm-article-h3">From a Mechanical to an Operational Description</h3>
+        <p class="stbmm-article-content">
+            With the analysis we performed in section \ref{redundancies_in_X}, 
+            we can revisit the question we asked ourselves in section 
+            \ref{num_times_S_in_D}. Previously, we had a <i>mechanical</i> 
+            description of the answer: start at the root of the suffix tree 
+            $$T$$, make your way down towards the leaves using the characters of 
+            $$S$$, and perform a DFS to determine the number of leaf nodes that 
+            are still reachable. Now that we know there exist equivalence 
+            classes of N-grams and that it's really these equivalence classes 
+            that constitute meaningful features, we can develop an 
+            <i>operational</i> description: the frequency with which $$S$$
+            appears in $$D$$ is equal to the number of leaves in the subtree 
+            rooted at the representative node for the equivalence class of $$S$$.
+        </p>
         <!-- Section 6 -->
+        <h2 class="stbmm-article-h2">Properties of the Node Matrix $$\mathcal{X}$$</h2>
+        <p class="stbmm-article-content">
+            Armed with the operational description from section \ref{operational_description}, 
+            we'll see that even after eliminating useless N-grams, there's 
+            <i>still</i> redundant information in our N-gram matrix. 
+            In particular, the frequency with which node appears is equal 
+            to the frequencies with which the node's children appear. Why? 
+            Because the number of leaves in the subtree rooted at a node is 
+            equal to the sum of the number of leaves in the subtrees rooted 
+            at the node's children, and our operational description translates 
+            these statements about leaves in subtrees into equivalent statements 
+            about frequencies of appearance.
+        </p>
         <!-- Section 7 -->
         <!-- Section 8 -->
         <h2 class="stbmm-article-h2">8. Multiplying N-gram Matrices in Linear Space and Time</h2>
