@@ -41,9 +41,8 @@ def run_e2e(N_DOCS):
     # At this point we have all of the uids for the nodes, and we have the 
     # node in a BFF.
 
-    # Generate Squiggly X. Inspired by German, rather than doing top down, we
-    # build bottom up. sub_squiggs stores a mapping from nodes to vectors.
-    # We iterate backwards through the layers.
+    # Generate Phi. Inspired by German, rather than doing top down, we
+    # build bottom up.
     phi = dok_matrix((N_DOCS, len(node_uids)), dtype=np.int32)
     for i in range(len(layers) - 1, -1, -1):
         layer = layers[i]

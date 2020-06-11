@@ -5,11 +5,9 @@ var colorlist = ["#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#f
 var max_string = colorlist.length;
 
 var stree = new SuffixTree();
-stree.addString('MISSION#');
-var treeData = stree.addString('MISSISSIPPI$').convertToJson();
+var treeData = stree.addString('$').convertToJson();
 
-
-var realWidth = 1000;
+var realWidth = window.innerWidth / 2;
 var realHeight = 800;
 
 // ************** Generate the tree diagram	 *****************
@@ -41,8 +39,10 @@ root.x0 = height / 2;
 root.y0 = 0;
 
 $( "#show" ).click(function() {
-	var str_list = $( "#words" ).val().split(",");
-
+    var str_list = $( "#words" ).val().split(",");
+    for (let i = 0; i < str_list.length; i++) {
+        str_list[i] = str_list[i].trim();
+    }
 	if (!check_char($( "#words" ).val(), special_chars)){
 		$( "#error" ).text("Your strings should not contain any of this special chars : " +  special_chars);
 		$( "#error" ).toggle(true);
@@ -71,14 +71,113 @@ $( "#show" ).click(function() {
 		root.x0 = height / 2;
 		root.y0 = 0;
   		update(root);
-  	}
-
+    }
+    ngramFreqs = {}
+    for (let i = 0; i < str_list.length; i++) {
+        let document = str_list[i];
+        for (let n = 1; n <= $("#ngramLength").val(); n++) {
+            for (let start_ind = 0; start_ind <= document.length - n; start_ind++) {
+                let ngram = document.substring(start_ind, start_ind + n);
+                if (ngramFreqs[ngram] === undefined) {
+                    ngramFreqs[ngram] = {}
+                    ngramFreqs[ngram][i] = 1;
+                } else if (ngramFreqs[ngram][i] === undefined) {
+                    ngramFreqs[ngram][i] = 1;
+                } else {
+                    ngramFreqs[ngram][i] += 1;
+                }
+            }
+        }
+    }
+    const orderedNgramFreqs = {};
+    Object.keys(ngramFreqs).sort((a, b) => {
+        if (a.length < b.length) {
+            return -1;
+        }
+        if (b.length < a.length) {
+            return 1;
+        }
+        if (a.length === b.length) {
+            return 0;
+        }
+        if (a < b) {
+            return -1;
+        } else if (b < a) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }).forEach(function(key) {
+        orderedNgramFreqs[key] = ngramFreqs[key];
+    });
+    let ngramText = "";
+    ngramText += "$$\\begin{matrix}"
+    for (let doc_num = 0; doc_num < str_list.length; doc_num++) {
+        ngramText += "& D_" + (doc_num + 1) + ""
+    }
+    ngramText += "\\\\"
+    for (let i = 0; i < Object.keys(orderedNgramFreqs).length; i++) {
+        ngramText += "\\texttt{" + Object.keys(orderedNgramFreqs)[i] + "}"
+        for (let doc_num = 0; doc_num < str_list.length; doc_num++) {
+            ngramText += "&" + 
+            (orderedNgramFreqs[Object.keys(orderedNgramFreqs)[i]][doc_num] !== undefined ?
+            orderedNgramFreqs[Object.keys(orderedNgramFreqs)[i]][doc_num] : 0)
+        }
+        ngramText += "\\\\"
+    }
+    ngramText += "\\end{matrix}$$"
+    console.log(ngramText)
+    document.getElementById('ngram-matrix-visualization-uncompressed').innerHTML = ngramText;
+    MathJax.typeset()
 });
+
+function clearSearches() {
+    let rootChildren = tree.nodes(root)[0].children;
+    while (rootChildren.length > 0) {
+        let newChildren = []
+        for (let i = 0; i < rootChildren.length; i++) {
+            rootChildren[i].wasSearched = false;
+            if (rootChildren[i].children) {
+                newChildren = newChildren.concat(rootChildren[i].children);
+            }
+        }
+        console.log(newChildren)
+        rootChildren = newChildren;
+    }
+}
+
+$('#submitSearch').click(() => {
+    clearSearches();
+    let rootChildren = tree.nodes(root)[0].children;
+    let searchTerm = $('#searchInput').val();
+    let links = tree.links(tree.nodes(root));
+    let fellOff = false;
+    while(searchTerm.length > 0 && !fellOff) {
+        for (let i = 0; i <= rootChildren.length; i++) {
+            if (i == rootChildren.length) {
+                fellOff = true;
+                break;
+            }
+            if (searchTerm.startsWith(rootChildren[i].name)) {
+                rootChildren[i].wasSearched = true;
+                searchTerm = searchTerm.substring(rootChildren[i].name.length);
+                rootChildren = rootChildren[i].children;
+                break;
+            }
+            if (rootChildren[i].name.startsWith(searchTerm)) {
+                rootChildren[i].wasSearched = true;
+                searchTerm = "";
+                break;
+            }
+        }
+    }
+    update(root);
+
+})
 
 d3.select(self.frameElement).style("height", "800px");
 
 function update(source) {
-
 	var coeff = getDepth(root);
   // Compute the new tree layout.
   var nodes = tree.nodes(root).reverse(),
@@ -115,8 +214,8 @@ function update(source) {
 
   nodeUpdate.select("circle")
 	  .attr("r", 10)
-	  .style("fill", function(d) { return d._children ? "#ddd" : "#fff"; })
-	  .style("stroke", function(d) { return d._children ? "#bbb" : colorlist[d.seq]; });
+	  .style("fill", function(d) { return d.wasSearched ? "#FFFF00" : (d._children ? "#ddd" : "#fff"); })
+	  .style("stroke", function(d) { return d.wasSearched ? "#FFFF00" : (d._children ? "#bbb" : colorlist[d.seq]); });
 
   nodeUpdate.select("text")
 	  .style("fill-opacity", 1);
@@ -140,7 +239,10 @@ function update(source) {
   // Enter any new links at the parent's previous position.
   link.enter().insert("path", "g")
 	  .attr("class", "link")
-	  .style("stroke", function(d) { return d.target._children ? "#ccc" : colorlist[d.target.seq]; })
+	  .style("stroke", function(d) { 
+          console.log(d.wasSearched)
+          return d.wasSearched ? "#FFFF00" : (d.target._children ? "#ccc" : colorlist[d.target.seq]); 
+    })
 
 	  .attr("d", function(d) {
 		var o = {x: source.x0, y: source.y0};
@@ -212,4 +314,8 @@ getDepth = function (jdata) {
     }
     return 1 + depth
 }
+$('#show').click();
+$(".node").mouseenter(function(e) {
+    console.log(e);
+})
 });

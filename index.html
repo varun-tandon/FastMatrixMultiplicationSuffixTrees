@@ -1,65 +1,132 @@
-<html>
-    <head>
+<!doctype html>
+
+<head>
+    <meta charset="utf-8">
         <link rel="stylesheet" href="style.css">
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    </head>
-    <body>
-        <h1>Suffix Tree Based Matrix Multiplication </h1>
-        <h3>by German Enik, Eric Lou, Kevin Tan, and Varun Tandon</h3>
-        <h4>Explainer of the paper Fast Algorithms for Learning with Long N-grams via Suffix Tree Based Matrix Multiplication (Paskov et al.)</h4>
-        <h2>Motivation</h2>
-        <p>Matrix multiplication is one of the most frequently performed operations 
-            in machine learning and data manipulation tasks. In many cases, the 
-            speed of these algorithms are largely bound by the speed at which 
-            they can perform these matrix vector multiplications. However, in the 
-            general case, matrix multiplications often take quadratic time. Thus, 
-            given the importance of matrix multiplication, speeding up this operation 
-            is critical for speeding up many big data tasks.
-        </p>
-        <p>
-            The  paper,  "Fast  Algorithms  for  Learning  with  Long  N-grams  via  Suffix  
-            Tree  Based  Matrix  Multiplication" by Paskov et al.  provides a linear time 
-            algorithm for multiplying a specific type of matrix, known as the N-gram matrix.
-        </p>
-        <p>
-            In  this  paper,  an N-gram  is  defined  to  be  an  arbitrary  string  of  length N; 
-            this  is  an  important  distinction  because  there  exists  another  common  definition 
-            of N-gram  ,  which  is  a  string  of N English  words. However, we note that the set 
-            of all N-grams as defined in the paper is a superset of the set of all N-grams as traditionally defined, 
-            thus the traditional definition of an N-gram matrix is covered by the paper's definition
-        </p>
-        <p>
-            As this paper describes, N-gram matrices have a very rich structure 
-            to them which, when understood deeply, can improve both the efficacy 
-            and efficiency of machine learning models in natural language processing. 
-            The two core insights this paper makes about this intrinsic structure are the 
-            following:
-        </p>
-        <ol>
-            <li>If N-grams are chosen naively or exhaustively, then there is a
-                large probability that many columns in the N-gram matrix are going
-                to be completely identical, which makes some of the statistical 
-                "features" redundant. More on this in Section 2.2.</li>
-            <br>
-            <li>
-                Even after pruning out redundant columns in the N-gram matrix, 
-                many of the columns are still going to be linear combinations of 
-                other columns. More on this in Section 2.3.
-            </li>
-        </ol>
-    </body>
-    <body>
-        <input id="words" />
-        <button id="show">Show</button>
-        <h1>Practice D3 visualization</h1>
-        <!-- Add a svg area, empty -->
+    <script src="https://distill.pub/template.v1.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/front-matter">
+        title: "Suffix Tree Based Matrix Multiplication"
+        description: "Explained: Fast Algorithms for Learning with Long N-grams via Suffix Tree Based Matrix Multiplication (Paskov et al.)"
+        authors:
+        - German Enik: http://colah.github.io
+        - Eric Lou: http://shancarter.com
+        - Kevin Tan: http://colah.github.io
+        - Varun Tandon: http://colah.github.io
+        affiliations:
+        - Stanford University: http://stanford.edu
+        - Stanford University: http://stanford.edu
+        - Stanford University: http://stanford.edu
+        - Stanford University: http://stanford.edu
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;600;700&family=Roboto&display=swap');
+        #stbmm-article-title {
+            font-family: 'Libre Franklin', sans-serif;
+            font-weight: 700;
+            width: 50%;
+            margin-left: 25%;
+        }
+        #stbmm-article-subtitle {
+            /* font-family: 'Libre Franklin', sans-serif; */
+            font-weight: 300;
+            width: 50%;
+            margin-left: 25%;
+        }
+        dt-byline {
+            border-bottom: 1px solid rgba(0,0,0,0.1) !important;
+            margin-bottom: 10px !important;
+            margin-left: 25% !important;
+            width: 50% !important;
+        }
+        h2.stbmm-article-h2 {
+            font-size: 36px;
+            font-weight: 600;
+            font-family: 'Libre Franklin', sans-serif;
+            margin-left: 25%;
+        }
+        p.stbmm-article-content {
+            font-weight: 400;
+            font-family: 'Roboto', sans-serif;
+            margin-left: 25%;
+        }
+        textarea.stbmm-article-textarea {
+            margin-left: 25%;
+            width: 30%;
+            height: 100px;
+            font-family: 'Roboto', sans-serif;
+            border: 1px solid rgba(0,0,0,0.5);
+            border-radius: 10px;;
+        }
+        #ngram-selecter-text {
+            font-family: 'Roboto', sans-serif;
+            margin-left: 60px;
+            margin-right: 5px;
+
+        }
+        #visualize-options-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-left: 25%;
+            width: 30%;
+        }
+        #viz_area {
+            margin-left: 25%;
+            margin-top: 20px;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <dt-article>
+        <h1 id="stbmm-article-title">Suffix Tree Based Matrix Multiplication </h1>
+        <h4 id="stbmm-article-subtitle">Explained: Fast Algorithms for Learning with Long N-grams via Suffix Tree Based Matrix Multiplication <dt-cite key="paskov-stbmm"></dt-cite></h4>
+        <dt-byline></dt-byline>
+        <h2 class="stbmm-article-h2">Motivation</h2>
+        <p class="stbmm-article-content">This is the first paragraph of the article.</p>
+    
+    
+        <!-- Visualization of Suffix Tree -->
+        <h2 class="stbmm-article-h2">Add your documents.</h2>
+        <textarea id="words" class="stbmm-article-textarea">
+Hi my name is Varun, 
+Hi my name is German,
+Hi my name is Eric,
+Hi my name is Kevin
+        </textarea>
+        <br>
+        <div id="visualize-options-container">
+            <button class="stbmm-article-button" id="show">Visualize Suffix Tree</button>
+            <span id="ngram-selecter-text">N:</span>
+            <input id="ngramLength" type="number" value="3"/>
+        </div>
         <svg id="viz_area" height=800 width=1000></svg>
-        <!-- Load d3.js -->
-        <!-- <script src="https://d3js.org/d3.v5.min.js"></script> -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <div id="ngram-matrix-visualization-uncompressed"></div>
+    </dt-article>
+    <dt-appendix>
+    </dt-appendix>
+    
+    <script type="text/bibliography">
+      @article{paskov-stbmm,
+        title={Fast Algorithms for Learning with Long N-grams via Suffix Tree Based Matrix
+            Multiplication},
+        author={Paskov, Hristo S., Mitchell, John C., Hastie, Trevor J.},
+        journal={Uncertainty in Artificial Intelligence},
+        year={2015},
+        url={http://theory.stanford.edu/~hpaskov/pub/cr_uai.pdf}
+      }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
         <script src="scripts/ukkonen.js"></script>
         <script src="scripts/SuffixTreeJS.js"></script>
-    </body>
-</html>
+</body>
+
+
