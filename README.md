@@ -1,4 +1,4 @@
-# FastMatrixMultiplicationSuffixTrees
+# Multiplying N-gram Matrices in Linear Time and Space
 
 Welcome to our repository! Here are some quick links:
 
