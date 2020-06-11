@@ -48,7 +48,6 @@ $(document).ready(function () {
   root = treeData;
   root.x0 = height / 2;
   root.y0 = 0;
-
   //   $('#ngram-matrix-visualization-uncompressed').css('height', '300px');
   //   $('#ngram-matrix-visualization-uncompressed').css('overflow', 'scroll');
   $("#show").click(function () {
@@ -87,46 +86,46 @@ $(document).ready(function () {
       root.y0 = 0;
       update(root);
     }
-    ngramFreqs = {};
-    for (let i = 0; i < str_list.length; i++) {
-      let document = str_list[i];
-      for (let n = 1; n <= $("#ngramLength").val(); n++) {
-        for (let start_ind = 0; start_ind <= document.length - n; start_ind++) {
-          let ngram = document.substring(start_ind, start_ind + n);
-          if (ngramFreqs[ngram] === undefined) {
-            ngramFreqs[ngram] = {};
-            ngramFreqs[ngram][i] = 1;
-          } else if (ngramFreqs[ngram][i] === undefined) {
-            ngramFreqs[ngram][i] = 1;
-          } else {
-            ngramFreqs[ngram][i] += 1;
-          }
-        }
-      }
-    }
-    const orderedNgramFreqs = {};
-    Object.keys(ngramFreqs)
-      .sort((a, b) => {
-        if (a.length < b.length) {
-          return -1;
-        }
-        if (b.length < a.length) {
-          return 1;
-        }
-        if (a.length === b.length) {
-          return 0;
-        }
-        if (a < b) {
-          return -1;
-        } else if (b < a) {
-          return 1;
-        } else {
-          return 0;
-        }
-      })
-      .forEach(function (key) {
-        orderedNgramFreqs[key] = ngramFreqs[key];
-      });
+    // ngramFreqs = {};
+    // for (let i = 0; i < str_list.length; i++) {
+    //   let document = str_list[i];
+    //   for (let n = 1; n <= $("#ngramLength").val(); n++) {
+    //     for (let start_ind = 0; start_ind <= document.length - n; start_ind++) {
+    //       let ngram = document.substring(start_ind, start_ind + n);
+    //       if (ngramFreqs[ngram] === undefined) {
+    //         ngramFreqs[ngram] = {};
+    //         ngramFreqs[ngram][i] = 1;
+    //       } else if (ngramFreqs[ngram][i] === undefined) {
+    //         ngramFreqs[ngram][i] = 1;
+    //       } else {
+    //         ngramFreqs[ngram][i] += 1;
+    //       }
+    //     }
+    //   }
+    // }
+    // const orderedNgramFreqs = {};
+    // Object.keys(ngramFreqs)
+    //   .sort((a, b) => {
+    //     if (a.length < b.length) {
+    //       return -1;
+    //     }
+    //     if (b.length < a.length) {
+    //       return 1;
+    //     }
+    //     if (a.length === b.length) {
+    //       return 0;
+    //     }
+    //     if (a < b) {
+    //       return -1;
+    //     } else if (b < a) {
+    //       return 1;
+    //     } else {
+    //       return 0;
+    //     }
+    //   })
+    //   .forEach(function (key) {
+    //     orderedNgramFreqs[key] = ngramFreqs[key];
+    //   });
       $("#viz_area2 .node").mouseenter((e) => {
         let transform = String(e.delegateTarget.attributes[1].nodeValue).split(",");
         let y = Number(transform[0].substring(10));

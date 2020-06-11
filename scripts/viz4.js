@@ -18,7 +18,7 @@ $(document).ready(function () {
   var ngram_is_collapsed = true;
   var stree = new SuffixTree();
   var treeData = stree.addString("$").convertToJson();
-
+  var selectedDocument = 0;
   var realWidth = window.innerWidth * 0.6;
   var realHeight = 800;
 
@@ -51,12 +51,29 @@ $(document).ready(function () {
 
   //   $('#ngram-matrix-visualization-uncompressed').css('height', '300px');
   //   $('#ngram-matrix-visualization-uncompressed').css('overflow', 'scroll');
+  function setSelected(i, doc_text) {
+    selectedDocument = i;
+    $('#show').click();
+    $("#numLeavesTextSingle").text('No node selected.');
+    $("#documentHighlightedPSingle").text(doc_text);
+  }
   $("#show").click(function () {
     var str_list = $("#words").val().split(",");
     for (let i = 0; i < str_list.length; i++) {
       str_list[i] = str_list[i].trim();
     }
-    str_list = [str_list[0]]
+    str_list_all = str_list;
+    str_list = [str_list[selectedDocument]]
+    let newHTML = ""
+    for (let i = 0; i < str_list_all.length; i++) {
+        newHTML += "<button class='viz4_area_document_buttons' id='viz4_area_document_button_" + i + "'>Select Document " + (i + 1) + "</button>"
+    }
+    $('.viz4_area_document_selection').html(newHTML)
+    for (let i = 0; i < str_list_all.length; i++) {
+        $('#viz4_area_document_button_' + i).click(function() {
+            setSelected(i, str_list_all[i]);
+        })
+    }
     if (!check_char($("#words").val(), special_chars)) {
       $("#error").text(
         "Your strings should not contain any of this special chars : " +
@@ -88,46 +105,46 @@ $(document).ready(function () {
       root.y0 = 0;
       update(root);
     }
-    ngramFreqs = {};
-    for (let i = 0; i < str_list.length; i++) {
-      let document = str_list[i];
-      for (let n = 1; n <= $("#ngramLength").val(); n++) {
-        for (let start_ind = 0; start_ind <= document.length - n; start_ind++) {
-          let ngram = document.substring(start_ind, start_ind + n);
-          if (ngramFreqs[ngram] === undefined) {
-            ngramFreqs[ngram] = {};
-            ngramFreqs[ngram][i] = 1;
-          } else if (ngramFreqs[ngram][i] === undefined) {
-            ngramFreqs[ngram][i] = 1;
-          } else {
-            ngramFreqs[ngram][i] += 1;
-          }
-        }
-      }
-    }
-    const orderedNgramFreqs = {};
-    Object.keys(ngramFreqs)
-      .sort((a, b) => {
-        if (a.length < b.length) {
-          return -1;
-        }
-        if (b.length < a.length) {
-          return 1;
-        }
-        if (a.length === b.length) {
-          return 0;
-        }
-        if (a < b) {
-          return -1;
-        } else if (b < a) {
-          return 1;
-        } else {
-          return 0;
-        }
-      })
-      .forEach(function (key) {
-        orderedNgramFreqs[key] = ngramFreqs[key];
-      });
+    // ngramFreqs = {};
+    // for (let i = 0; i < str_list.length; i++) {
+    //   let document = str_list[i];
+    //   for (let n = 1; n <= $("#ngramLength").val(); n++) {
+    //     for (let start_ind = 0; start_ind <= document.length - n; start_ind++) {
+    //       let ngram = document.substring(start_ind, start_ind + n);
+    //       if (ngramFreqs[ngram] === undefined) {
+    //         ngramFreqs[ngram] = {};
+    //         ngramFreqs[ngram][i] = 1;
+    //       } else if (ngramFreqs[ngram][i] === undefined) {
+    //         ngramFreqs[ngram][i] = 1;
+    //       } else {
+    //         ngramFreqs[ngram][i] += 1;
+    //       }
+    //     }
+    //   }
+    // }
+    // const orderedNgramFreqs = {};
+    // Object.keys(ngramFreqs)
+    //   .sort((a, b) => {
+    //     if (a.length < b.length) {
+    //       return -1;
+    //     }
+    //     if (b.length < a.length) {
+    //       return 1;
+    //     }
+    //     if (a.length === b.length) {
+    //       return 0;
+    //     }
+    //     if (a < b) {
+    //       return -1;
+    //     } else if (b < a) {
+    //       return 1;
+    //     } else {
+    //       return 0;
+    //     }
+    //   })
+    //   .forEach(function (key) {
+    //     orderedNgramFreqs[key] = ngramFreqs[key];
+    //   });
       $("#viz_area4 .node").mouseenter((e) => {
         let transform = String(e.delegateTarget.attributes[1].nodeValue).split(",");
         let y = Number(transform[0].substring(10));
