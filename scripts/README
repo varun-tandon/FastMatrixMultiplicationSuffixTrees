@@ -1,2 +1,7 @@
-SuffixTreeJS.js is the js file Kevin sent, we are starting w this one
-suffixtree.js is the D3js template
+Welcome to our repo on Fast Algorithms or Learning with Long N-grams via Suffix Tree Based Matrix Multiplication!
+
+For our code of the runtime analysis, please take a look at python -> e2e.py.
+
+For out website code, feel free to take a look at index.html and the scripts folder.
+
+If you'd like to read the original research paper, click on original_paper.pdf.
