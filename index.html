@@ -163,9 +163,27 @@
         .l-body {
             margin-left: 25%;
         }
+        #loadingDiv {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: white;
+        }
+        #loadingDiv > img {
+            width: 10%;
+        }
     </style>
+    <script>
+        var initialDisplay = $('body').css('display');
+$('#loadingDiv').css('display', 'block')
+$('body').css('display', 'none');
+    </script>
 </head>
-
+<div id="loadingDiv">
+    <img src="images/Ripple-1s-200px.gif" />
+</div>
 <body>
     <dt-article>
         <h1 id="stbmm-article-title">Suffix Tree Based Matrix Multiplication </h1>
