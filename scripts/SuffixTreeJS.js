@@ -7,7 +7,7 @@ var max_string = colorlist.length;
 var stree = new SuffixTree();
 var treeData = stree.addString('$').convertToJson();
 
-var realWidth = window.innerWidth / 2;
+var realWidth = window.innerWidth * 0.6;
 var realHeight = 800;
 
 // ************** Generate the tree diagram	 *****************
