@@ -341,6 +341,6 @@ $('.node').mouseenter((e) => {
     }
     update(root);
 });
-// $('#loadingDiv').css('display', 'none');
-// $('body').css('display', initialDisplay);
+$('#loadingDiv').css('display', 'none');
+$('body').css('display', initialDisplay);
 });
