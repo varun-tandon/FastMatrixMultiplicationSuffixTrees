@@ -159,7 +159,6 @@ $(document).ready(function () {
 	  newChildren = newChildren.concat(rootChildren[i].children);
 	}
       }
-      console.log(newChildren)
       rootChildren = newChildren;
     }
   }
@@ -210,8 +209,6 @@ $(document).ready(function () {
       $('#searchResultsSingle').css('color', 'green');
       $('#searchResultsSingle').text('Term found!')
     }
-    console.log(lastNode)
-    console.log(calcNumLeafNodes(lastNode))
     update(root);
 
   })
@@ -281,7 +278,6 @@ $(document).ready(function () {
     link.enter().insert("path", "g")
       .attr("class", "link")
       .style("stroke", function(d) {
-	console.log(d.wasSearched)
 	return d.wasSearched ? "#FFFF00" : (d.target._children ? "#ccc" : colorlist[d.target.seq]);
       })
 

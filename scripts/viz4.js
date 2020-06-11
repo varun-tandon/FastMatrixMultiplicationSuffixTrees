@@ -150,7 +150,6 @@ $(document).ready(function () {
         let y = Number(transform[0].substring(10));
         let x = Number(transform[1].substring(0, 5));
         let foundNode = undefined;
-        console.log(x, y);
         var nodes = tree.nodes(root);
         for (let i = 0; i < nodes.length; i++) {
           if (Math.abs(x - nodes[i].x0) < 0.1 && Math.abs(y - nodes[i].y0) < 0.1) {
@@ -184,7 +183,6 @@ $(document).ready(function () {
         } else {
           while (documents.indexOf(suffix, startIndex) != -1) {
             let selectedIndex = documents.indexOf(suffix, startIndex);
-            console.log(startIndex);
             reconstructedText += documents.substring(startIndex, selectedIndex);
             reconstructedText += '<span class="hoveredNodeText">';
             reconstructedText += documents.substring(
@@ -195,7 +193,6 @@ $(document).ready(function () {
             startIndex = selectedIndex + suffix.length;
           }
           reconstructedText += documents.substring(startIndex);
-          console.log(reconstructedText);
           $("#documentHighlightedPSingle").html(reconstructedText);
         }
         update(root);
@@ -345,7 +342,6 @@ $(document).ready(function () {
       .insert("path", "g")
       .attr("class", "link")
       .style("stroke", function (d) {
-        console.log(d.wasSearched);
         return d.wasSearched
           ? "#FFFF00"
           : d.target._children
