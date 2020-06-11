@@ -19,3 +19,4 @@ Welcome to our repository! Here are some quick links:
 - [ ] Action item 6: Make the section links in the PDF dynamically jump to the correct section.
 - [x] Actually the footnotes and authors aren't even showing up on mine! @Varun Tandon@German Enik Eric and I have no idea how to do this. Do you have any ideas?
 - [ ] Action item 7: The animation in section 4.1 updates the something in section 4.2, which is a little off-putting. We need to disentangle the two animations.
+- [ ] Action item 8: Make the layout responsive to screensize in quantized increments (with a responsive grid).
