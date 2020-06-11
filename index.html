@@ -126,6 +126,9 @@
         <!-- Section 7 -->
         <!-- Section 8 -->
         <!-- Section 9 -->
+        <h2 class="stbmm-article-h2">Conclusion</h2>
+        <p class="stbmm-article-content">
+        The $$N$$-gram matrix, a critical component of many popular machine learning models in the field of natural language processing, can be represented in linear space and multiplied in linear time. This is done by first recognizing and removing redundant $$N$$-grams which leaves us with a node matrix $$\ndm$$, and then resolving the linear dependencies between the remaining columns which leaves us with a leaf label matrix $$\Phi$$ which has a linear number of nonzero entries; these kinds of matrices can be represented in linear space and multiplied in linear time. Multiplying $$\ndm$$ with a vector $$w$$ requires transforming $$w$$ into $$\beta$$ via a top down traversal of the corresponding generalized suffix tree, propagating weights downward. Multiplying $$\ndm^T$$ with a vector $$y$$ requires a bottom up traversal of the corresponding generalized suffix tree, propagating intermediate results upward. None of these incredible improvements would have been possible without having recognized and explored the intimate relationship between \ngram matrices and generalized suffix trees.</p>
         <!-- Visualization of Suffix Tree -->
         <h2 class="stbmm-article-h2">Add your documents.</h2>
         <textarea id="words" class="stbmm-article-textarea">
