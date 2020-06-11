@@ -175,11 +175,6 @@
             width: 10%;
         }
     </style>
-    <script>
-        var initialDisplay = $('body').css('display');
-$('#loadingDiv').css('display', 'block')
-$('body').css('display', 'none');
-    </script>
 </head>
 <div id="loadingDiv">
     <img src="images/Ripple-1s-200px.gif" />
@@ -725,6 +720,11 @@ Hi my name is Kevin
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>
+        var initialDisplay = $('body').css('display');
+        $('#loadingDiv').css('display', 'block')
+        $('body').css('display', 'none');
+    </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
         <script src="scripts/ukkonen.js"></script>
         <script src="scripts/SuffixTreeJS.js"></script>
