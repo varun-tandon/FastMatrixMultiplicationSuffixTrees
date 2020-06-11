@@ -127,6 +127,61 @@ $(document).ready(function () {
       .forEach(function (key) {
         orderedNgramFreqs[key] = ngramFreqs[key];
       });
+      $(".node").mouseenter((e) => {
+        let transform = String(e.delegateTarget.attributes[1].nodeValue).split(",");
+        let y = Number(transform[0].substring(10));
+        let x = Number(transform[1].substring(0, 5));
+        let foundNode = undefined;
+        console.log(x, y);
+        var nodes = tree.nodes(root);
+        for (let i = 0; i < nodes.length; i++) {
+          if (Math.abs(x - nodes[i].x0) < 0.1 && Math.abs(y - nodes[i].y0) < 0.1) {
+            foundNode = nodes[i];
+            break;
+          }
+        }
+        if (foundNode.suffix !== "") {
+            clearSearches();
+            foundNode.wasSearched = true;
+            $("#numLeavesText").text(
+                foundNode === undefined
+                  ? "No node selected."
+                  : 'Selected node "' +
+                      foundNode.suffix +
+                      '" appears ' +
+                      calcNumLeafNodes(foundNode) +
+                      " times."
+              );
+        }
+        let documents = $("#words").val();
+        let suffix = special_chars.includes(
+            foundNode.suffix[foundNode.suffix.length - 1]
+          )
+            ? foundNode.suffix.substring(0, foundNode.suffix.length - 1)
+            : String(foundNode.suffix);
+        let startIndex = 0;
+        let reconstructedText = "";
+        if (suffix === "") {
+          $("#documentHighlightedP").html(documents);
+        } else {
+          while (documents.indexOf(suffix, startIndex) != -1) {
+            let selectedIndex = documents.indexOf(suffix, startIndex);
+            console.log(startIndex);
+            reconstructedText += documents.substring(startIndex, selectedIndex);
+            reconstructedText += '<span class="hoveredNodeText">';
+            reconstructedText += documents.substring(
+              selectedIndex,
+              selectedIndex + suffix.length
+            );
+            reconstructedText += "</span>";
+            startIndex = selectedIndex + suffix.length;
+          }
+          reconstructedText += documents.substring(startIndex);
+          console.log(reconstructedText);
+          $("#documentHighlightedP").html(reconstructedText);
+        }
+        update(root);
+      });
     // let ngramText = "";
     // ngramText += "$$\\begin{matrix}"
     // for (let doc_num = 0; doc_num < str_list.length; doc_num++) {
@@ -351,61 +406,61 @@ $(document).ready(function () {
     return 1 + depth;
   };
   $("#show").click();
-  $(".node").mouseenter((e) => {
-    let transform = String(e.delegateTarget.attributes[1].nodeValue).split(",");
-    let y = Number(transform[0].substring(10));
-    let x = Number(transform[1].substring(0, 5));
-    let foundNode = undefined;
-    console.log(x, y);
-    var nodes = tree.nodes(root);
-    for (let i = 0; i < nodes.length; i++) {
-      if (Math.abs(x - nodes[i].x0) < 0.1 && Math.abs(y - nodes[i].y0) < 0.1) {
-        foundNode = nodes[i];
-        break;
-      }
-    }
-    if (foundNode.suffix !== "") {
-        clearSearches();
-        foundNode.wasSearched = true;
-        $("#numLeavesText").text(
-            foundNode === undefined
-              ? "No node selected."
-              : 'Selected node "' +
-                  foundNode.suffix +
-                  '" appears ' +
-                  calcNumLeafNodes(foundNode) +
-                  " times."
-          );
-    }
-    let documents = $("#words").val();
-    let suffix = special_chars.includes(
-        foundNode.suffix[foundNode.suffix.length - 1]
-      )
-        ? foundNode.suffix.substring(0, foundNode.suffix.length - 1)
-        : String(foundNode.suffix);
-    let startIndex = 0;
-    let reconstructedText = "";
-    if (suffix === "") {
-      $("#documentHighlightedP").html(documents);
-    } else {
-      while (documents.indexOf(suffix, startIndex) != -1) {
-        let selectedIndex = documents.indexOf(suffix, startIndex);
-        console.log(startIndex);
-        reconstructedText += documents.substring(startIndex, selectedIndex);
-        reconstructedText += '<span class="hoveredNodeText">';
-        reconstructedText += documents.substring(
-          selectedIndex,
-          selectedIndex + suffix.length
-        );
-        reconstructedText += "</span>";
-        startIndex = selectedIndex + suffix.length;
-      }
-      reconstructedText += documents.substring(startIndex);
-      console.log(reconstructedText);
-      $("#documentHighlightedP").html(reconstructedText);
-    }
-    update(root);
-  });
+//   $(".node").mouseenter((e) => {
+//     let transform = String(e.delegateTarget.attributes[1].nodeValue).split(",");
+//     let y = Number(transform[0].substring(10));
+//     let x = Number(transform[1].substring(0, 5));
+//     let foundNode = undefined;
+//     console.log(x, y);
+//     var nodes = tree.nodes(root);
+//     for (let i = 0; i < nodes.length; i++) {
+//       if (Math.abs(x - nodes[i].x0) < 0.1 && Math.abs(y - nodes[i].y0) < 0.1) {
+//         foundNode = nodes[i];
+//         break;
+//       }
+//     }
+//     if (foundNode.suffix !== "") {
+//         clearSearches();
+//         foundNode.wasSearched = true;
+//         $("#numLeavesText").text(
+//             foundNode === undefined
+//               ? "No node selected."
+//               : 'Selected node "' +
+//                   foundNode.suffix +
+//                   '" appears ' +
+//                   calcNumLeafNodes(foundNode) +
+//                   " times."
+//           );
+//     }
+//     let documents = $("#words").val();
+//     let suffix = special_chars.includes(
+//         foundNode.suffix[foundNode.suffix.length - 1]
+//       )
+//         ? foundNode.suffix.substring(0, foundNode.suffix.length - 1)
+//         : String(foundNode.suffix);
+//     let startIndex = 0;
+//     let reconstructedText = "";
+//     if (suffix === "") {
+//       $("#documentHighlightedP").html(documents);
+//     } else {
+//       while (documents.indexOf(suffix, startIndex) != -1) {
+//         let selectedIndex = documents.indexOf(suffix, startIndex);
+//         console.log(startIndex);
+//         reconstructedText += documents.substring(startIndex, selectedIndex);
+//         reconstructedText += '<span class="hoveredNodeText">';
+//         reconstructedText += documents.substring(
+//           selectedIndex,
+//           selectedIndex + suffix.length
+//         );
+//         reconstructedText += "</span>";
+//         startIndex = selectedIndex + suffix.length;
+//       }
+//       reconstructedText += documents.substring(startIndex);
+//       console.log(reconstructedText);
+//       $("#documentHighlightedP").html(reconstructedText);
+//     }
+//     update(root);
+//   });
   // $('#loadingDiv').css('display', 'none');
   // $('body').css('display', initialDisplay);
   $('#documentHighlightedP').text($('#words').val())
