@@ -1,35 +1,46 @@
-from BFMT import get_BFMT
+from BFMT import get_BFMT #script we wrote
 import numpy as np
 from random import randint
 from scipy.sparse import dok_matrix
-from datetime import datetime
+from datetime import datetime #for benchmarking
 
-# Helper function for checking if the node is a leaf.
+# 
 def isLeaf(node):
+    """
+    Helper function for checking if the node is a leaf.
+    @param: node is an object of class suffix_tree.node
+    @return: true if node is a leaf, false otherwise 
+    """
     return str(type(node)) == "<class 'suffix_tree.node.Leaf'>"
 
+
 def run_e2e(N_DOCS):
-    # Specifiy the number of documents to pull from the tweets. 
-    # (You will have to extract the Twitter zip file).
+    """
+    And end-to-end functions that performs matrix multiplication in linear time.
+    @param: N_DOCS is an integer that represents the number of documents to pull from the tweets (our corpus).
+    You will have to extract the Twitter zip file.
+    @return: void
+    """
+
     RANDOM_LIMIT = 10000
 
     # Builds the tree (technically not a BFMT yet)
     tree, docs = get_BFMT(n_docs=N_DOCS)
 
     # Set up a dictionary that will store unique identifiers for each node.
-    # Specifically, here we have a mapping from [node: uid]
+    # Specifically, here we have a mapping from [node: int]
     last_uid = 0
     node_uids = dict()
 
-    # Breadth first search to populate the layers of the tree.
+    # Breadth First Search to populate the layers of the tree.
     q = []
     curr_depth = -1
     layers = []
-    q.append((tree.root, 0))
+    q.append((tree.root, 0)) #tuple (root node, level 0)
     while (len(q) > 0):
         node, depth = q.pop()
-        node_uids[node] = last_uid
-        last_uid += 1
+        node_uids[node] = last_uid #map the node to an integer that is its uid
+        last_uid += 1 #increment last_uid to maintain uniqueness
         if depth != curr_depth: # new layer
             layers.append([])
             curr_depth = depth
@@ -41,7 +52,7 @@ def run_e2e(N_DOCS):
     # At this point we have all of the uids for the nodes, and we have the 
     # node in a BFF.
 
-    # Generate Squiggly X. Inspired by German, rather than doing top down, we
+    # Generate Phi. Rather than doing top down, we
     # build bottom up. sub_squiggs stores a mapping from nodes to vectors.
     # We iterate backwards through the layers.
     phi = dok_matrix((N_DOCS, len(node_uids)), dtype=np.int32)
@@ -49,7 +60,8 @@ def run_e2e(N_DOCS):
         layer = layers[i]
         for node in layer:
             if isLeaf(node):
-                # Leaf node case. Just use the standard basis vector.
+                # Leaf node case, encode the standard basis vector by only storing a 1 
+                # 
                 phi[int(node.str_id), node_uids[node]] = 1
     phi = phi.tocsr()
 
