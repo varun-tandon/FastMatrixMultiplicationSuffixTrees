@@ -127,7 +127,7 @@ $(document).ready(function () {
       .forEach(function (key) {
         orderedNgramFreqs[key] = ngramFreqs[key];
       });
-      $(".node").mouseenter((e) => {
+      $("#viz_area2 .node").mouseenter((e) => {
         let transform = String(e.delegateTarget.attributes[1].nodeValue).split(",");
         let y = Number(transform[0].substring(10));
         let x = Number(transform[1].substring(0, 5));
