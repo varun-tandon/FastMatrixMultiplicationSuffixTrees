@@ -372,6 +372,25 @@
         <!-- Section 5 -->
         <!-- Section 6 -->
         <!-- Section 7 -->
+        <h2 class="stbmm-article-h2">7. Using Generalized Suffix Trees to Understand N-gram Matrices</h2>
+
+            <p>While we didn't explicitly mention it, we actually made two simplifying assumptions thus far in our analysis. First, we limited ourselves to a single document, which made $$\mathcal{X}$$ and $$X$$ simple row vectors. Second, we constrained ourselves to the case where $$\mathcal{S}$$ includes every equivalence class of N-grams, which made the linear dependencies in $$\mathcal{X}$$ and $$X$$ easier to reason about. In this section, we relax the first assumption. Relaxing the second has been left as an exercise for the adventurous reader.</p>
+
+            <h3 class="stbmm-article-h3"> Generalized Suffix Trees </h3>
+
+                <p>Very little of our analysis actually changes when we consider multiple documents; the most notable difference is that we now need to build a <i>generalized</i> suffix tree. Because such data structures are not the focus of this article, we won't dwell on their intricacies. It suffices to say that this is done by taking a corpus, appending unique sentinel characters to each document so we can differentiate the suffixes of one document from those of another, and constructing a Patricia trie over the suffixes of these slightly modified documents. Let's revisit some of the previous questions we asked ourselves to see how the generalized suffix tree will help us.</p>
+
+            <h3 class="stbmm-article-h3">Does $$S$$ appear in $$D_i$$?</h3>
+
+                <p>Contrast this with what we asked ourselves in section \ref{does_S_appear_in_D}. With multiple documents, we need to specify the specific document $$D_i$$ that we're interested in determining whether or not $$S$$ appears in. Previously, our algorithm consisted of walking down $$T$$ using the characters of $$S$$ and reporting whether or not we fall off the tree. What this algorithm was doing was telling us whether $$S$$ appears in <i>any</i> of the documents in our corpus $$C$$; this worked because $$C$$ was just the singleton containing $$D$$. Generalizing this to multiple documents requires an additional step. We perform the same tree traversal as before, reporting that $$S$$ does not appear in $$D_i$$ if we fall off, but, if we don't, we need to perform a DFS to determine if any of the leaves in the subtree belong to $$D_i$$. If so, then $S$ appears in $$D_i$$. Otherwise, it does not (it appears in some other $$D_j$$ where $$i \neq j$$).</p>
+
+            <h3 class="stbmm-article-h3"> How many times does $$S$$ appear in $$D_i$$? </h3>
+
+                <p>The procedure for answering this question is almost exactly the same as that for answering the question in the previous section. The only difference is that we're not interested in whether or not any leaves in the subtree satisfy the property that they belong to $$D_i$$, but, rather, how many leaves satisfy this property. The practical consequence of this is that instead of stopping at the first leaf that belongs to $$D_i$$ in the subtree we reach after navigating $$T$$ with $$S$$, we actually need to explore all of the leaves in the subtree and count the number of leaves that belong to $$D_i$$.</p>
+
+            <h3 class="stbmm-article-h3"> Linear Dependencies of Columns </h3>
+
+                <p>An interesting and important observation is that the columns of the N-gram matrix are still interrelated when we generalized to multiple documents. The reason why this is the case is because these interrelationships hold for each individual row in the $N$-gram matrix and, because the rows do not interact, these same relationships still hold when we consider all of the rows simultaneously.</p>
         <!-- Section 8 -->
         <h2 class="stbmm-article-h2">8. Multiplying N-gram Matrices in Linear Space and Time</h2>
             <p class="stbmm-article-content">Alas! Our journey has come to an end; everything is in place to discuss how we can multiply $$N$$-gram matrices in linear space and time. To be pedantic, this technique doesn't apply to arbitrary $$N$$-gram matrices but specifically to node matrices ($$N$$-gram matrices without redundant columns). This isn't really a limitation, however, because, as mentioned in section 5.1, this is almost always what we want.</p>
