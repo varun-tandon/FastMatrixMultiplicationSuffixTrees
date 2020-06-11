@@ -207,9 +207,10 @@
       inspiration for these techniques, and, along the way, probe the
       surprisingly deep connections $$X$$ between N-gram matrices and generalized
       suffix trees.
-
       </p>
+
       <!-- Section 2 -->
+      <dt-byline></dt-byline>
       <a id="mv_mult_in_linear_time">
 	<h2 class="stbmm-article-h2">2. Matrix-Vector Multiplication in Linear Space and Time</h2>
       </a>
@@ -293,7 +294,9 @@
       space and multiply it in linear time. The question then becomes:
       do N-gram matrices obey this constraint?
       </p>
+
       <!-- Section 3 -->
+      <dt-byline></dt-byline>
       <h2 class="stbmm-article-h2">3. Basic Terminology</h2>
       <p class="stbmm-article-content">
       Before we can answer this question, let's define what an
@@ -427,7 +430,9 @@
       (Note: we transpose this matrix so that it can fit on the page).
       </p>
       <div id="ngram-matrix-visualization-uncompressed"></div>
+
       <!-- Section 4 -->
+      <dt-byline></dt-byline>
       <h2 class="stbmm-article-h2">4. Using Suffix Trees to Understand N-gram Matrices</h2>
       <p class="stbmm-article-content">
       At this point we've established that if we can somehow reformulate
@@ -488,7 +493,9 @@
       </p>
       <p class="stbmm-article-content" id="documentHighlightedP"></p>
       <svg id="viz_area2" height=800 width=1000></svg>
+
       <!-- Section 5 -->
+      <dt-byline></dt-byline>
       <a id="redundancies_in_X">
 	<h2 class="stbmm-article-h2">5. Developing Useful Abstractions</h2>
       </a>
@@ -545,7 +552,9 @@
       appears in $$D$$ is equal to the number of leaves in the subtree
       rooted at the representative node for the equivalence class of $$S$$.
       </p>
+
       <!-- Section 6 -->
+      <dt-byline></dt-byline>
       <h2 class="stbmm-article-h2">6. Properties of the Node Matrix $$\mathcal{X}$$</h2>
       <p class="stbmm-article-content">
       Armed with the operational description from section <a href="#operational_description">5.2</a>,
@@ -593,6 +602,7 @@
       </div>
 
       <!-- Section 7 -->
+      <dt-byline></dt-byline>
       <h2 class="stbmm-article-h2">7. Using Generalized Suffix Trees to Understand N-gram Matrices</h2>
 
       <p class="stbmm-article-content">While we didn't explicitly mention it, we actually made two simplifying assumptions thus far in our analysis. First, we limited ourselves to a single document, which made $$\mathcal{X}$$ and $$X$$ simple row vectors. Second, we constrained ourselves to the case where $$\mathcal{S}$$ includes every equivalence class of N-grams, which made the linear dependencies in $$\mathcal{X}$$ and $$X$$ easier to reason about. In this section, we relax the first assumption. Relaxing the second has been left as an exercise for the adventurous reader.</p>
@@ -614,7 +624,9 @@
       </a>
 
       <p class="stbmm-article-content">An interesting and important observation is that the columns of the N-gram matrix are still interrelated when we generalized to multiple documents. The reason why this is the case is because these interrelationships hold for each individual row in the N-gram matrix and, because the rows do not interact, these same relationships still hold when we consider all of the rows simultaneously.</p>
+
       <!-- Section 8 -->
+      <dt-byline></dt-byline>
       <h2 class="stbmm-article-h2">8. Multiplying N-gram Matrices in Linear Space and Time</h2>
       <p class="stbmm-article-content">Alas! Our journey has come to an end; everything is in place to discuss how we can multiply N-gram matrices in linear space and time. To be pedantic, this technique doesn't apply to arbitrary N-gram matrices but specifically to node matrices (N-gram matrices without redundant columns). This isn't really a limitation, however, because, as mentioned in section <a href="#equivalence_classes">5.1</a>, this is almost always what we want.</p>
 
@@ -681,9 +693,8 @@
 
       <p class="stbmm-article-content"> We've already address why $$\Phi$$ takes a linear amount of space to store. All that remains is analyzing why this operation takes linear time to compute. It takes a constant amount of time to multiply such vectors. Since we need to perform a linear number of such multiplications because there is a linear number of leaves, this takes linear time. Filling out the other entries of the result vector with a bottom up traversal of the suffix tree also takes linear time because it involves just adding a constant number of things.</p>
 
-
-
       <!-- Section 9 -->
+      <dt-byline></dt-byline>
       <h2 class="stbmm-article-h2">9. Experimental Results</h2>
       <p class="stbmm-article-content">The theory checks out, but how well do
       these techniques work in practice? Suffix trees are one of the most famous
@@ -706,6 +717,7 @@
       <a href="https://github.com/varun-tandon/FastMatrixMultiplicationSuffixTrees">here</a>.</p>
 
       <!-- Section 10 -->
+      <dt-byline></dt-byline>
       <h2 class="stbmm-article-h2">10. Conclusion</h2>
       <p class="stbmm-article-content">The N-gram matrix, a critical component of many popular machine learning models in the field of natural language processing, can be represented in linear space and multiplied in linear time. This is done by first recognizing and removing redundant N-grams which leaves us with a node matrix $$\mathcal{X}$$, and then resolving the linear dependencies between the remaining columns which leaves us with a leaf label matrix $$\Phi$$ which has a linear number of nonzero entries; these kinds of matrices can be represented in linear space and multiplied in linear time. Multiplying $$\mathcal{X}$$ with a vector $$w$$ requires transforming $$w$$ into $$\beta$$ via a top down traversal of the corresponding generalized suffix tree, propagating weights downward. Multiplying $$\mathcal{X}^T$$ with a vector $$y$$ requires a bottom up traversal of the corresponding generalized suffix tree, propagating intermediate results upward. None of these incredible improvements would have been possible without having recognized and explored the intimate relationship between N-gram matrices and generalized suffix trees.</p>
       <!-- Visualization of Suffix Tree -->
