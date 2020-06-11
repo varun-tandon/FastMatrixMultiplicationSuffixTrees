@@ -18,7 +18,7 @@ Welcome to our repository! Here are some quick links:
 - [x] Action item 5: I'm a *huge* fan of this visualization right here but there are two things that would make this better. The first is if the text that was part of this visualization (the two lines at the top) were visually offset from the rest of the article so people know it's the visualization and not the article. The second is that we should not let the user hover over the root. It's nonsensical and we should handle this edge case!
 - [ ] Action item 6: Make the section links in the PDF dynamically jump to the correct section.
 - [x] Actually the footnotes and authors aren't even showing up on mine! @Varun Tandon@German Enik Eric and I have no idea how to do this. Do you have any ideas?
-- [ ] Action item 7: The animation in section 4.1 updates the something in section 4.2, which is a little off-putting. We need to disentangle the two animations.
+- [x] Action item 7: The animation in section 4.1 updates the something in section 4.2, which is a little off-putting. We need to disentangle the two animations.
 - [ ] Action item 8: Make the layout responsive to screensize in quantized increments (with a responsive grid).
 - [ ] Action item 9: Make the dynamic visualizations have a light grey background so they are visually offset from the static components of the webpage.
 - [ ] Action item 10: Make the N-gram matrix visualization in section 3.3 render spaces as the \Box symbol. Right now there are literal spaces. This is for consistency and for ease of use.
