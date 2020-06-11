@@ -156,7 +156,9 @@
         <h3 class="stbmm-article-h3">Cursory Analysis</h3>
         <p class="stbmm-article-content">
             In terms of space, if we're trying to store a $$3 \times 3$$ matrix, 
-            shouldn't this take 9 units of memory? Similarly, if we're trying to store 
+            shouldn't this take 9 units of memory?
+            <dt-fn>For some measure of memory, be it bits or bytes.</dt-fn>
+            Similarly, if we're trying to store 
                 a $$4 \times 4$$ matrix, shouldn't this take 16 units of memory? 
                 More generally, if we wanted to store an $$n \times n$$ matrix, 
                 shouldn't this take $$n^2$$ units (a quadratic amount) of memory?
@@ -235,12 +237,15 @@
             N-gram matrix is. Along the way, we pick up a few other 
             pieces of terminology and notation.
         </p>
+        <a id="document_and_corpus"></a>
         <h3 class="stbmm-article-h3">Document and Corpus</h3>
         <p class="stbmm-article-content">
             Informally, a document is a string and a corpus is a collection of 
             documents. Formally, a document $$D = d_1 d_2 \dots d_N$$ is a 
             sequence of characters $$d_i$$ and a corpus $$C = \{D_1, D_2, \dots, D_M\}$$ 
-            is a set of documents $$D_i$$. For instance, below are some examples of documents. 
+            is a set of documents $$D_i$$. For instance, below are some examples
+            <dt-fn>In these examples, the $$\Box$$ symbol represents a space.</dt-fn>
+            of documents. 
             Collectively, they form a corpus.
             (In these examples, the $$\Box$$ symbol represents a space.) 
             <br><br>    
@@ -253,7 +258,16 @@
         </p>
         <h3 class="stbmm-article-h3">N-gram and N-gram Set</h3>
         <p class="stbmm-article-content">
-            Informally, an N-gram is a string of $$N$$ letters and an 
+            Informally, an N-gram is a string of $$N$$ letters
+            <dt-fn>An N-gram could also mean a sequence of $N$ words, phonemes, 
+                or syllables. While our analysis rests on the assumption that 
+                an N-gram is a sequence of letters, it is by no means limited 
+                to it. In particular, the contents of this article can be easily 
+                generalized to other interpretations of what an N-gram could mean; 
+                one can imagine preprocessing a string, assigning to each 
+                word/phoneme/syllable an identifier, and then applying our analysis to those identifiers.
+            </dt-fn>
+            and an 
             N-gram set is a collection of N-grams. Formally, an 
             N-gram $$S = s_1s_2\dots s_n$$ is a sequence of characters $$s_i$$ 
             and an N-gram set $$\mathcal{S} = \{S_1, S_2, \dots, S_m\}$$ is a set of 
@@ -291,7 +305,7 @@
             An N-gram matrix $$X$$ is a data structure that stores the 
             frequencies with which the N-grams in an N-gram set $$\mathcal{S}$$ 
             appear in a corpus $$C$$. For instance, take our corpus from 
-            section \ref{document_and_corpus} and N-gram set from section 
+            section <a href="#document_and_corpus">3.1</a> and N-gram set from section 
             \ref{ngram_and_ngram_set}. The corresponding N-gram matrix is shown 
             below. Though arbitrary, it's conventional to have the rows represent 
             the documents and columns represent the N-grams.
@@ -363,7 +377,10 @@
             Because the remaining number of distinct paths to leaves is 
             exactly equal to the remaining number of leaves, the number of 
             times $$S$$ appears in $$D$$ is equal to the number of leaves in the 
-            subtree rooted at $$S$$. This can be found efficiently 
+            subtree rooted at $$S$$
+            <dt-fn>Should processing the letters of $$S$$ leave you in the middle 
+                of an edge, then the subtree is rooted at the next possible node.</dt-fn>
+            . This can be found efficiently 
             with a simple depth-first traversal.
         </p>
         <div class="stbmm-article-image">
@@ -378,7 +395,7 @@
             has the same frequency as some other $N$-gram. Let's see how we can 
             use $T$ to identify such \ngrams in $X$. 
         </p>
-        <h3 class="stbmm-article-h3">Equivalence Classes of N-grams and the Node Matrix X</h3>
+        <h3 class="stbmm-article-h3">Equivalence Classes of N-grams and the Node Matrix $$\mathcal{X}$$</h3>
         <p class="stbmm-article-content">
             To make our discussion concrete, let $$D = \texttt{MISSISSIPPI}$$. 
             Note that the N-grams $$\texttt{SIS}, \texttt{SISI}, \texttt{SISSIP}, 
@@ -400,7 +417,7 @@
             The upshot is that some N-grams can be safely eliminated from 
             $$\mathcal{S}$$ without impacting model performance while decreasing memory 
             usage and training time, which removes potentially a large number 
-            of columns from X. We call the resulting matrix the <i>node matrix</i>
+            of columns from $$X$$. We call the resulting matrix the <i>node matrix</i>
             and give it the symbol $$\mathcal{X}$$.  As we will see in the next section, 
             pruning these redundant N-grams actually unlocks further speedups by 
             revealing interrelationships between columns of the $$\mathcal{X}$$. 
@@ -459,7 +476,9 @@
             <p class="stbmm-article-content">Alas! Our journey has come to an end; everything is in place to discuss how we can multiply $$N$$-gram matrices in linear space and time. To be pedantic, this technique doesn't apply to arbitrary $$N$$-gram matrices but specifically to node matrices ($$N$$-gram matrices without redundant columns). This isn't really a limitation, however, because, as mentioned in section 5.1, this is almost always what we want.</p>
 
             <h3 class="stbmm-article-h3">8.1 Computing $$\mathcal{X}w$$ in Linear Space and Time</h3>
-                <p class="stbmm-article-content"> We saw in section \ref{linear-dependencies} that if $$p$$ was a node in $$T$$ and $$c_1, \dots, c_n$$ were its children, then $$\mathcal{X} = \sum_i \mathcal{X}_{c_i}$$. This is an interesting observation, but what does it have to do with efficient matrix-vector multiplication? Well, let's assume for the moment that $$p$$ and $$c_1, \dots, c_n$$ were the only nodes in our generalized suffix tree. This means that our node matrix might\footnote{Any permutation of the columns would be an equally valid node matrix.} look something like</p>
+                <p class="stbmm-article-content"> We saw in section \ref{linear-dependencies} that if $$p$$ was a node in $$T$$ and $$c_1, \dots, c_n$$ were its children, then $$\mathcal{X} = \sum_i \mathcal{X}_{c_i}$$. This is an interesting observation, but what does it have to do with efficient matrix-vector multiplication? Well, let's assume for the moment that $$p$$ and $$c_1, \dots, c_n$$ were the only nodes in our generalized suffix tree. This means that our node matrix might
+                    <dt-fn>Any permutation of the columns would be an equally valid node matrix.</dt-fn>
+                    look something like</p>
                 
                 <div class="stbmm-article-equation">$$\mathcal{X} = \begin{pmatrix} \mathcal{X}_{c_1} & \dots & \mathcal{X}_{c_n} & \mathcal{X}_p \end{pmatrix}.$$</div>
 
