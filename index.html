@@ -92,6 +92,28 @@
             font-style: normal;
             margin-left: 25%;
         }
+        ul.stbmm-article-ul {
+            margin-left: 25%;
+            font-family: 'Liber Franklin', sans-serif;
+        }
+        #stbmm-article-equation32 {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #stbmm-article-equation32-bottom {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .stbmm-article-equation {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -127,8 +149,221 @@
             Before we begin, let’s address the possibility of matrix-vector multiplication in linear space and time.
         </p>
         <h3 class="stbmm-article-h3">Cursory Analysis</h3>
+        <p class="stbmm-article-content">
+            In terms of space, if we're trying to store a $$3 \times 3$$ matrix, 
+            shouldn't this take 9 units of memory? Similarly, if we're trying to store 
+                a $$4 \times 4$$ matrix, shouldn't this take 16 units of memory? 
+                More generally, if we wanted to store an $$n \times n$$ matrix, 
+                shouldn't this take $$n^2$$ units (a quadratic amount) of memory?
+                <br>
+                <br>
+            In terms of time, if we're trying to multiply a $$3 \times 3$$ matrix 
+            with a $$3 \times 1$$ vector, don't we need at least 9 multiplications 
+            and 6 additions? Similarly, if we wanted to multiply a $$4 \times 4$$ 
+            matrix with a $$ 4 \times 1$$ vector, don't we need at least 16
+            multiplications and 12 additions? More generally, if we 
+            wanted to multiply an $$n \times n$$ matrix and an $$n \times 1 $$
+            vector, don't we need at least $$n^2$$ (a quadratic number) 
+            multiplications and $$n(n-1)$$ (also a quadratic number) additions?
+                <br>
+                <br>
+        Are we on a wild goose chase? Or is our analysis somehow incorrect?
+                <br>
+                <br>
+            Rest assured, our analysis is <i>not</i> incorrect, but it 
+            <i>does</i> assume that we're working with <i>arbitrary</i> matrices. 
+            It most definitely takes quadratic space to store an <i>arbitrary</i>
+             matrix and quadratic time to multiply an <i>arbitrary</i> matrix with a 
+             vector. But if we restrict ourselves to matrices with a linear 
+             number of nonzero entries-a type of <i>sparse</i> matrix-then what 
+             we want is indeed possible. Let's see why.
+        </p>
+        <h3 class="stbmm-article-h3">Storing Matrices in Linear Space</h3>
+        <p class="stbmm-article-content">
+            If we only have a linear number of nonzero entries, the overwhelming 
+            majority of the entries are zero. Where there's a lot of redundancy, 
+            there's a lot of potential for compression. In particular, 
+            instead of explicitly storing every entry of a matrix $$M$$, 
+            let's only explicitly store the nonzero ones; the zero entries can 
+            be stored <i>implicitly</i>. One can imagine implementing this with 
+            a hierarchical map $$\mathcal{M}$$ with two layers of keys.
+        </p>
+            <ul class="stbmm-article-ul">
+                <li class="stbmm-article-li">
+                    <b>Layer 1:</b> The first key into $$\mathcal{M}$$ represents 
+                    the row of a matrix. That is, $$\mathcal{M}[i] = M_i$$.
+                </li>
+                <li>
+                    <b>Layer 2:</b> The second key into $\mathcal{M}$ represents 
+                    the column of a matrix. That is, $$\mathcal{M}[i][j] = M_{ij}$$.
+                </li>
+            </ul>
+        <p class="stbmm-article-content">
+            In particular, we only add the nonzero entries into map $$\mathcal{M}$$. 
+            If the map doesn't have an associated value when the first key is 
+            $$r$$ and the second key is $$c$$, then we know that $$M_{rc} = 0$$. In 
+            this manner, we've successfully stored the nonzero entries implicitly
+            without consuming space for them. Because we only have a linear number
+            of nonzero entries by assumption, storing such a matrix only takes 
+            linear space.
+        </p>
+        <h3 class="stbmm-article-h3">Multiplying Matrices in Linear Time</h3>
+        <p class="stbmm-article-content">
+            Given the representation of sparse matrices described in the previous
+            section, it's not too difficult to see that we can matrix-vector 
+            multiplication in linear time. Specifically, since the zero entries 
+            would not have contributed meaningfully to the result anyways, we 
+            can simply loop over the entries of $$\mathcal{M}$$, multiply them with the 
+            corresponding element in the vector, and then aggregate the results.
+            <br><br>
+            Because we loop over a linear number of nonzero entries, and perform 
+            a constant amount of work for each entry, this also takes linear time 
+            overall. The conclusion, then, is that if we have a matrix with a linear 
+            number of nonzero entries, then we can both store the matrix in linear 
+            space and multiply it in linear time. The question then becomes: 
+            do N-gram matrices obey this constraint?
+        </p>
         <!-- Section 3 -->
+        <h2 class="stbmm-article-h2">Basic Terminology</h2>
+        <p class="stbmm-article-content">
+            Before we can answer this question, let's define what an 
+            N-gram matrix is. Along the way, we pick up a few other 
+            pieces of terminology and notation.
+        </p>
+        <h3 class="stbmm-article-h3">Document and Corpus</h3>
+        <p class="stbmm-article-content">
+            Informally, a document is a string and a corpus is a collection of 
+            documents. Formally, a document $$D = d_1 d_2 \dots d_N$$ is a 
+            sequence of characters $$d_i$$ and a corpus $$C = \{D_1, D_2, \dots, D_M\}$$ 
+            is a set of documents $$D_i$$. For instance, below are some examples of documents. 
+            Collectively, they form a corpus.
+            (In these examples, the $$\Box$$ symbol represents a space.) 
+            <br><br>    
+        $$\begin{align*}
+            D_1 &= \texttt{THE$\Box$ONLY$\Box$SUBSTITUTE$\Box$FOR$\Box$GOOD$\Box$MANNERS$\Box$IS$\Box$FAST$\Box$REFLEXES}\\
+            D_2 &= \texttt{ARTIFICIAL$\Box$INTELLIGENCE$\Box$IS$\Box$NO$\Box$MATCH$\Box$FOR$\Box$NATURAL$\Box$STUPIDITY}\\
+            D_3 &= \texttt{TALK$\Box$IS$\Box$CHEAP$\Box$UNTIL$\Box$YOU$\Box$HIRE$\Box$A$\Box$LAWYER}\\
+            C &= \{D_1, D_2, D_3\}
+        \end{align*}$$
+        </p>
+        <h3 class="stbmm-article-h3">N-gram and N-gram Set</h3>
+        <p class="stbmm-article-content">
+            Informally, an N-gram is a string of $$N$$ letters and an 
+            N-gram set is a collection of N-grams. Formally, an 
+            N-gram $$S = s_1s_2\dots s_n$$ is a sequence of characters $$s_i$$ 
+            and an N-gram set $$\mathcal{S} = \{S_1, S_2, \dots, S_m\}$$ is a set of 
+            N-grams $$S_i$$. For instance, below are some examples of N-grams. 
+            Collectively, them form an N-gram set.
+        </p>
+        <div id="stbmm-article-equation32">
+            <div class="stbmm-article-equation32-third">
+                $$\begin{align*}
+                S_4 &= \texttt{XE}\\
+                S_5 &= \texttt{CH}\\
+                S_6 &= \texttt{ST}
+                \end{align*}$$
+            </div>
+            <div class="stbmm-article-equation32-third">
+                $$\begin{align*}
+                S_4 &= \texttt{XE}\\
+                S_5 &= \texttt{CH}\\
+                S_6 &= \texttt{ST}
+                \end{align*}$$
+            </div>
+            <div class="stbmm-article-equation32-third">
+                $$\begin{align*}
+                S_7 &= \texttt{STR}\\
+                S_8 &= \texttt{NTE}\\
+                S_9 &= \texttt{$\Box$IS}
+                \end{align*}$$
+            </div>
+        </div>
+        <div id="stbmm-article-equation32-bottom">
+            $$\mathcal{S} = \{S_1, S_2, S_3, S_4, S_5, S_6, S_7, S_8, S_9\}$$
+        </div>
+        <h3 class="stbmm-article-h3">N-gram Matrix</h3>
+        <p class="stbmm-article-content">
+            An N-gram matrix $$X$$ is a data structure that stores the 
+            frequencies with which the N-grams in an N-gram set $$\mathcal{S}$$ 
+            appear in a corpus $$C$$. For instance, take our corpus from 
+            section \ref{document_and_corpus} and N-gram set from section 
+            \ref{ngram_and_ngram_set}. The corresponding N-gram matrix is shown 
+            below. Though arbitrary, it's conventional to have the rows represent 
+            the documents and columns represent the N-grams.
+        </p>
+        <div class="stbmm-article-equation">
+        $$
+        \begin{matrix} 
+            & S_1 & S_2 & S_3 & S_4 & S_5 & S_6 & S_7 & S_8 & S_9 \\
+            D_1&0&1&3&1&0&2&0&0&1\\
+            D_2&0&1&3&0&1&1&0&1&1\\
+            D_3&1&0&2&0&1&0&0&0&1
+        \end{matrix} 
+        $$
+        </div>
+        <p class="stbmm-article-content">
+            Because this notation will be useful later on, let 
+            $$X_S$$ be the column in the N-gram matrix corresponding to the 
+            N-gram $$S$$. Here are some examples of this notation, so you can 
+            get a feel for what it means.
+        </p>
+        <div id="stbmm-article-equation32">
+            <div class="stbmm-article-equation32-third">
+                \[X_{S_1} = \begin{pmatrix}0 \\ 0\\ 1\end{pmatrix}\]
+            </div>
+            <div class="stbmm-article-equation32-third">
+                \[X_{S_5} = \begin{pmatrix}0 \\ 1\\ 1\end{pmatrix}\]
+            </div>
+            <div class="stbmm-article-equation32-third">
+                \[X_{S_8} = \begin{pmatrix}0 \\ 1\\ 0\end{pmatrix}\]
+            </div>
+        </div>
         <!-- Section 4 -->
+        <h2 class="stbmm-article-h2">Using Suffix Trees to Understand N-gram Matrices</h2>
+        <p class="stbmm-article-content">
+            At this point we've established that if we can somehow reformulate 
+            an N-gram matrix in terms of a sparse matrix, then we can store it 
+            using linear space and multiply it in linear time. This section is 
+            about how this is possible. But first, let's see how we can use 
+            suffix trees to answer essential questions about N-gram matrices. 
+            In the following sections, let $$S$$ be an N-gram, $$D$$ be a 
+            document, and $$T$$ be the suffix tree for $$D$$.
+        </p>
+        <h3 class="stbmm-article-h3">Does $$S$$ Appear in $$D$$ ?</h3>
+        <p class="stbmm-article-content">
+            First of all, what does it mean for $$S$$ to <i>appear</i> in $$D$$? 
+            One way to think about this is that $$S$$ appears in $$D$$ if $$S$$ is a 
+            substring of $$D$$, but this just begs the question: what does it mean 
+            for $$S$$ to be a substring of $$D$$? The Fundamental Theorem of 
+            Stringology tells us that $$S$$ is a substring of $$D$$ if and only if 
+            $$S$$ is a prefix of a suffix of $$D$$. While being quite the tongue-twister, 
+            this theorem is incredibly useful. Why? Recall that the suffixes of 
+            $$D$$ are formed by concatenating the characters along a root-leaf 
+            path in $$T$$. So, $$S$$ is a prefix of a suffix of $$D$$ only if we 
+            don't fall of the tree when using the characters of $$S$$ to traverse 
+            $$T$$. This leads to an extremely intuitive algorithm for finding 
+            out whether $$S$$ appears in $$D$$.
+        </p>
+        <div class="stbmm-article-image">
+            <img src="img1.png"  id="stbmm-article-img1" />
+        </div>
+        <h3 class="stbmm-article-h3">How many times does $$S$$ appear in $$D$$ ?</h3>
+        <p class="stbmm-article-content">
+            By the Fundamental Theorem of Stringology, this is equivalent to 
+            the question: how many suffixes of $$D$$ is $$S$$ a prefix of? 
+            Just like before, let's use $$S$$ to navigate $$T$$. The suffixes 
+            which $$S$$ is a prefix of can be constructed by appending to $$S$$ 
+            the characters along the remaining paths to leaf nodes (assuming 
+            we stay on the tree, otherwise the answer is trivially zero). 
+            Because the remaining number of distinct paths to leaves is 
+            exactly equal to the remaining number of leaves, the number of 
+            times $$S$$ appears in $$D$$ is equal to the number of leaves in the 
+            subtree rooted at $$S$$. This can be found efficiently 
+            with a simple depth-first traversal.
+        </p>
+        <div class="stbmm-article-image">
+            <img src="img2.png"  id="stbmm-article-img2" />
+        </div>
         <!-- Section 5 -->
         <!-- Section 6 -->
         <!-- Section 7 -->
@@ -136,7 +371,7 @@
         <!-- Section 9 -->
         <h2 class="stbmm-article-h2">Conclusion</h2>
         <p class="stbmm-article-content">
-        The $$N$$-gram matrix, a critical component of many popular machine learning models in the field of natural language processing, can be represented in linear space and multiplied in linear time. This is done by first recognizing and removing redundant $$N$$-grams which leaves us with a node matrix $$\ndm$$, and then resolving the linear dependencies between the remaining columns which leaves us with a leaf label matrix $$\Phi$$ which has a linear number of nonzero entries; these kinds of matrices can be represented in linear space and multiplied in linear time. Multiplying $$\ndm$$ with a vector $$w$$ requires transforming $$w$$ into $$\beta$$ via a top down traversal of the corresponding generalized suffix tree, propagating weights downward. Multiplying $$\ndm^T$$ with a vector $$y$$ requires a bottom up traversal of the corresponding generalized suffix tree, propagating intermediate results upward. None of these incredible improvements would have been possible without having recognized and explored the intimate relationship between \ngram matrices and generalized suffix trees.</p>
+        The $$N$$-gram matrix, a critical component of many popular machine learning models in the field of natural language processing, can be represented in linear space and multiplied in linear time. This is done by first recognizing and removing redundant $$N$$-grams which leaves us with a node matrix $$\ndm$$, and then resolving the linear dependencies between the remaining columns which leaves us with a leaf label matrix $$\Phi$$ which has a linear number of nonzero entries; these kinds of matrices can be represented in linear space and multiplied in linear time. Multiplying $$\ndm$$ with a vector $$w$$ requires transforming $$w$$ into $$\beta$$ via a top down traversal of the corresponding generalized suffix tree, propagating weights downward. Multiplying $$\ndm^T$$ with a vector $$y$$ requires a bottom up traversal of the corresponding generalized suffix tree, propagating intermediate results upward. None of these incredible improvements would have been possible without having recognized and explored the intimate relationship between N-gram matrices and generalized suffix trees.</p>
         <!-- Visualization of Suffix Tree -->
         <h2 class="stbmm-article-h2">Add your documents.</h2>
         <textarea id="words" class="stbmm-article-textarea">
