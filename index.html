@@ -49,6 +49,7 @@
             font-weight: 400;
             font-family: 'Roboto', sans-serif;
             margin-left: 25%;
+            width: 55%;
         }
         textarea.stbmm-article-textarea {
             margin-left: 25%;
@@ -80,6 +81,10 @@
             flex-direction: column;
             justify-content: center;
         }
+        mjx-container {
+            width: fit-content;
+            display: inline !important;
+        }
     </style>
 </head>
 
@@ -92,7 +97,28 @@
         <p class="stbmm-article-content">This is the first paragraph of the article.</p>
     
         <!-- Section 1 -->
+        <h2 class="stbmm-article-h2">Motivation</h2>
+        <p class="stbmm-article-content">
+            A dataset is matrix in math language. Many modern machine learning 
+            models use matrices to encode the information required to solve a 
+            problem; these matrices are often multiplied with vectors many millions 
+            of times during the training process, which makes finding efficient 
+            algorithms for performing these multiplications a task of great practical 
+            interest. Generally speaking, matrix-vector multiplication takes 
+            <i>quadratic</i> time and space. However, in the case of N-gram 
+            matrices (a popular feature representation used in natural language models), 
+            there exist techniques to perform this operation in <i>linear</i>
+            time and space. In this article, we explore the mechanics and 
+            inspiration for these techniques, and, along the way, probe the 
+            surprisingly deep connections $$X$$ between N-gram matrices and generalized 
+            suffix trees.
+
+        </p>
         <!-- Section 2 -->
+        <h2 class="stbmm-article-h2">Matrix-Vector Multiplication in Linear Space and Time</h2>
+        <p class="stbmm-article-content">
+            Before we begin, let’s address the possibility of matrix-vector multiplication in linear space and time.
+        </p>
         <!-- Section 3 -->
         <!-- Section 4 -->
         <!-- Section 5 -->
