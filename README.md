@@ -7,3 +7,12 @@ Welcome to our repository! Here are some quick links:
 - For the original paper, click [here](original_paper.pdf).
 - For the PDF version of our explanatory article, click [here](our_paper.pdf).
 
+## TODO
+
+- [ ] Change repository description to: An explanatory article of the paper "Fast Algorithms for Learning with Long N-grams via Suffix Tree Based Matrix Multiplication" by Hristo S. Paskov, John C. Mitchell, and Trevor J. Hastie.
+- [ ] Action item 1: can we un-transpose this matrix? The first reason is that it would make it consistent with the rest of our paper, which is good. The second is that there are always going to be more suffixes than documents, so it would fit *better* untransposed.
+- [ ] Action item 2: Can you clarify how many tweets? Give a more concrete description of the corpus used? "Some tweets" is so incredibly vague. Did you scrape them from the internet?
+- [ ] Action item 3: Can we please fix the typo in the title of this graph? I don't think "Radnomized" gives off the impression that we were careful.
+- [ ] Action item 4: Can you give an R^2 value for the above graph to quantify how linear this is? Also, a residual plot would be nice so it's easy to see whether or not it truly is random. Just saying "looks linear" isn't very scientific... Plotting the line of best fit in red would help the reader a lot.
+- [ ] Action item 5: I'm a *huge* fan of this visualization right here but there are two things that would make this better. The first is if the text that was part of this visualization (the two lines at the top) were visually offset from the rest of the article so people know it's the visualization and not the article. The second is that we should not let the user hover over the root. It's nonsensical and we should handle this edge case!
+- [ ] Actually the footnotes and authors aren't even showing up on mine! @Varun Tandon@German Enik Eric and I have no idea how to do this. Do you have any ideas?
