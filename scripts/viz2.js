@@ -318,7 +318,28 @@ $('.node').mouseenter((e) => {
     foundNode.wasSearched = true;
     $('#numLeavesText').text(foundNode === undefined ? 'No node selected.': 
     'Selected node "' + foundNode.suffix +'" appears ' + calcNumLeafNodes(foundNode) + ' times.');
-
+    let documents = $('#words').val();
+    console.log(documents)
+    let suffix = special_chars.includes(foundNode.suffix[foundNode.suffix.length - 1]) ? 
+                foundNode.suffix.substring(0, foundNode.suffix.length - 1) :
+                String(foundNode.suffix)
+    let startIndex = 0;
+    let reconstructedText = "";
+    if (suffix === '') {
+        $('#documentHighlightedP').html('<span class="hoveredNodeText">' + documents  + '</span>');
+    } else {
+        while (documents.indexOf(suffix, startIndex) != -1) {
+            let selectedIndex = documents.indexOf(suffix, startIndex);
+            console.log(startIndex)
+            reconstructedText += documents.substring(startIndex, selectedIndex);
+            reconstructedText += '<span class="hoveredNodeText">'
+            reconstructedText += documents.substring(selectedIndex, selectedIndex + suffix.length);
+            reconstructedText += '</span>'
+            startIndex = selectedIndex + suffix.length;
+        }
+        console.log(reconstructedText)
+        $('#documentHighlightedP').html(reconstructedText);
+    }
     update(root);
 });
 });
